@@ -1,0 +1,16 @@
+<button
+  type="button"
+  class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel)] text-[var(--text)] transition hover:border-[var(--accent)]"
+  aria-label="Toggle dark mode"
+  data-theme-toggle
+>
+  <span aria-hidden="true">◐</span>
+</button>
+<script>
+  const button = document.querySelector('[data-theme-toggle]');
+  button?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const dark = root.classList.toggle('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  });
+</script>

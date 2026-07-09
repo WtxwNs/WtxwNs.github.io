@@ -1,0 +1,38 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import SectionTitle from '@/components/SectionTitle.astro';
+import { copy, siteConfig } from '@/data/profile';
+import type { Lang } from '@/data/navigation';
+export function getStaticPaths() { return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }]; }
+const lang = Astro.params.lang as Lang;
+---
+<Layout lang={lang} title={lang === 'zh' ? '关于' : 'About'}>
+  <SectionTitle title={lang === 'zh' ? '关于我' : 'About'} description={lang === 'zh' ? '一个稍微个人化的学术主页。' : 'A slightly personal academic homepage for research, writing, and useful links.'} />
+  <div class="content-prose">
+    {lang === 'zh' ? (
+      <>
+        <p>王童曦目前就读于东南大学未来技术学院，研究兴趣集中在强化学习理论、多智能体系统、高效大语言模型，以及可靠上下文学习。</p>
+        <p>{copy.zh.personalLine}</p>
+        <h2>工具</h2>
+        <p>本站使用 Astro、TypeScript、Tailwind CSS、MDX 与 Astro Content Collections 构建，适合静态部署。</p>
+        <h2>网站与部署</h2>
+        <p>网站可部署到 GitHub Pages 或 Vercel。论文、项目与博客内容都来自结构化内容文件，便于长期维护。</p>
+        <h2>版权</h2>
+        <p>除特别说明外，文字与网站内容版权归王童曦所有。代码许可可在仓库中单独声明。</p>
+      </>
+    ) : (
+      <>
+        <p>Tongxi Wang studies AI theory, reinforcement learning, multi-agent systems, efficient language models, and robotics. This site keeps research outputs, project records, and short notes in one maintainable place.</p>
+        <p>{copy.en.personalLine}</p>
+        <h2>Tools</h2>
+        <p>Astro, TypeScript, Tailwind CSS, MDX, Astro Content Collections, and static deployment.</p>
+        <h2>Source and Deployment</h2>
+        <p>The site is static-site friendly and can be deployed to Vercel or GitHub Pages.</p>
+        <h2>Copyright</h2>
+        <p>Unless otherwise noted, writing and site content are copyright {siteConfig.name}. Code can be licensed separately in the repository.</p>
+      </>
+    )}
+    <h2>{lang === 'zh' ? '联系' : 'Contact'}</h2>
+    <p>Email: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.</p>
+  </div>
+</Layout>

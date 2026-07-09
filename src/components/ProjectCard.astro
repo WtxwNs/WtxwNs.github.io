@@ -1,0 +1,40 @@
+---
+import type { Lang } from '@/data/navigation';
+interface Props {
+  project: {
+    data: {
+      title: string;
+      titleZh?: string;
+      role: string;
+      roleZh?: string;
+      area?: string;
+      areaZh?: string;
+      description: string;
+      descriptionZh?: string;
+      image?: string;
+      links: Record<string, string | null>;
+    };
+  };
+  lang?: Lang;
+}
+const { project, lang = 'en' } = Astro.props;
+const d = project.data;
+const title = lang === 'zh' ? d.titleZh ?? d.title : d.title;
+const role = lang === 'zh' ? d.roleZh ?? d.role : d.role;
+const area = lang === 'zh' ? d.areaZh ?? d.area : d.area;
+const description = lang === 'zh' ? d.descriptionZh ?? d.description : d.description;
+const links = Object.entries(d.links).filter(([, href]) => typeof href === 'string' && href.length > 0 && !href.startsWith('#todo'));
+---
+<article class="overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--panel)] shadow-soft transition hover:-translate-y-0.5 hover:border-[var(--accent)]">
+  {d.image && <img src={d.image} alt="" class="h-44 w-full object-cover" loading="lazy" />}
+  <div class="p-5">
+    <p class="text-sm font-semibold text-[var(--accent)]">{role}{area ? ` · ${area}` : ''}</p>
+    <h3 class="mt-1 font-serif text-2xl font-semibold text-[var(--text)]">{title}</h3>
+    <p class="mt-3 text-sm text-[var(--muted)]">{description}</p>
+    {links.length > 0 && (
+      <div class="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-[var(--accent)]">
+        {links.map(([label, href]) => <a href={href}>{label}</a>)}
+      </div>
+    )}
+  </div>
+</article>

@@ -1,0 +1,57 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import '@/styles/global.css';
+import { siteConfig } from '@/data/profile';
+import type { Lang } from '@/data/navigation';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: Lang;
+}
+
+const { title, lang = 'en' } = Astro.props;
+const description = Astro.props.description ?? (lang === 'zh' ? siteConfig.description : siteConfig.descriptionEn);
+const pageTitle = title ? `${title} | ${siteConfig.name}` : `${siteConfig.name} | Academic Homepage`;
+const canonical = new URL(Astro.url.pathname, siteConfig.site).toString();
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <script is:inline>
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme === 'dark' || (!theme && prefersDark)) document.documentElement.classList.add('dark');
+    </script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: siteConfig.name,
+      alternateName: siteConfig.nameZh,
+      email: `mailto:${siteConfig.email}`,
+      affiliation: siteConfig.institution,
+      address: { '@type': 'PostalAddress', addressLocality: siteConfig.location },
+      url: canonical,
+      sameAs: [siteConfig.github, siteConfig.scholar]
+    })}></script>
+  </head>
+  <body>
+    <Header lang={lang} pathname={Astro.url.pathname} />
+    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

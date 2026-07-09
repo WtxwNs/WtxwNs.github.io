@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import SectionTitle from '@/components/SectionTitle.astro';
+import Timeline from '@/components/Timeline.astro';
+import PublicationCard from '@/components/PublicationCard.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { coursework, education, honors, honorsZh, interests, siteConfig } from '@/data/profile';
+import type { Lang } from '@/data/navigation';
+export function getStaticPaths() { return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }]; }
+const lang = Astro.params.lang as Lang;
+const pubs = (await getCollection('publications')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<Layout lang={lang} title="CV">
+  <section class="py-6">
+    <SectionTitle title={lang === 'zh' ? '王童曦 / Tongxi Wang' : 'Tongxi Wang / 王童曦'} description={`${siteConfig.email} · ${siteConfig.github} · Google Scholar`} />
+    <div class="flex flex-wrap gap-2 text-sm font-semibold text-[var(--accent)]">
+      <a href={`mailto:${siteConfig.email}`}>Email</a>
+      <a href={siteConfig.github}>GitHub</a>
+      <a href={siteConfig.scholar}>Google Scholar</a>
+    </div>
+  </section>
+  <section class="py-6"><SectionTitle title={lang === 'zh' ? '教育经历' : 'Education'} /><Timeline items={education} lang={lang} /></section>
+  <section class="py-6"><SectionTitle title={lang === 'zh' ? '论文' : 'Publications'} /><div class="space-y-4">{pubs.map((pub) => <PublicationCard pub={pub} compact lang={lang} />)}</div></section>
+  <section class="py-6"><SectionTitle title={lang === 'zh' ? '研究项目' : 'Research Projects'} /><div class="grid gap-5 md:grid-cols-3">{projects.map((project) => <ProjectCard project={project} lang={lang} />)}</div></section>
+  <section class="py-6"><SectionTitle title={lang === 'zh' ? '研究兴趣' : 'Research Interests'} /><ul class="grid gap-3 md:grid-cols-2">{interests.map((i) => <li class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"><strong>{lang === 'zh' ? i.titleZh : i.title}</strong><p class="text-sm text-[var(--muted)]">{lang === 'zh' ? i.descriptionZh : i.description}</p></li>)}</ul></section>
+  <section class="py-6"><SectionTitle title={lang === 'zh' ? '课程' : 'Coursework'} /><p class="text-[var(--muted)]">{coursework.join(' · ')}</p></section>
+  <section class="py-6"><SectionTitle title={lang === 'zh' ? '荣誉与服务' : 'Honors & Service'} /><ul class="list-disc space-y-2 pl-5 text-[var(--muted)]">{(lang === 'zh' ? honorsZh : honors).map((h) => <li>{h}</li>)}</ul></section>
+</Layout>

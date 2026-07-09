@@ -1,0 +1,26 @@
+---
+import SocialLinks from './SocialLinks.astro';
+import { copy, siteConfig } from '@/data/profile';
+import type { Lang } from '@/data/navigation';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = copy[lang];
+const institution = lang === 'zh' ? siteConfig.institutionZh : siteConfig.institution;
+const location = lang === 'zh' ? siteConfig.locationZh : siteConfig.location;
+---
+<section class="grid gap-8 py-8 md:grid-cols-[1.4fr_0.6fr] md:items-center">
+  <div>
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">{institution}</p>
+    <h1 class="mt-4 font-serif text-5xl font-semibold leading-tight text-[var(--text)] sm:text-6xl">{t.heroTitle}</h1>
+    <p class="mt-4 text-lg font-medium text-[var(--accent)]">{t.tagline}</p>
+    <p class="mt-5 max-w-3xl text-lg text-[var(--muted)]">{t.intro}</p>
+    <p class="mt-4 max-w-3xl border-l-4 border-[var(--accent)] pl-4 font-serif text-xl text-[var(--text)]">{t.personalLine}</p>
+    <div class="mt-6"><SocialLinks lang={lang} /></div>
+    <p class="mt-4 text-sm text-[var(--muted)]">{location} · {siteConfig.email}</p>
+  </div>
+  <div class="justify-self-start md:justify-self-end">
+    <div class="flex h-48 w-48 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--panel)] shadow-soft">
+      <span class="font-serif text-5xl font-semibold text-[var(--accent)]">{lang === 'zh' ? '王' : 'TW'}</span>
+    </div>
+  </div>
+</section>

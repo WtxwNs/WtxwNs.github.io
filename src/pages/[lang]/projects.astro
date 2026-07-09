@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import SectionTitle from '@/components/SectionTitle.astro';
+import type { Lang } from '@/data/navigation';
+export function getStaticPaths() { return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }]; }
+const lang = Astro.params.lang as Lang;
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<Layout lang={lang} title={lang === 'zh' ? '项目' : 'Projects'}>
+  <SectionTitle title={lang === 'zh' ? '研究与工程项目' : 'Projects'} description={lang === 'zh' ? '医学机器人、智能体工作流与嵌入式系统实践。' : 'Research and engineering work across medical robotics, agent workflows, and embedded systems.'} />
+  <div class="grid gap-5 md:grid-cols-3">{projects.map((project) => <ProjectCard project={project} lang={lang} />)}</div>
+</Layout>

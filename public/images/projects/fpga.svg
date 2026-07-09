@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-label="Abstract FPGA board">
+  <rect width="900" height="520" fill="#eef2f8"/>
+  <rect x="154" y="92" width="592" height="336" rx="28" fill="#173a4f"/>
+  <rect x="306" y="170" width="288" height="184" rx="18" fill="#fbfaf7" stroke="#62c5df" stroke-width="16"/>
+  <g stroke="#62c5df" stroke-width="12" stroke-linecap="round">
+    <path d="M230 160h62M230 216h62M230 272h62M230 328h62M608 160h62M608 216h62M608 272h62M608 328h62"/>
+    <path d="M348 126v34M410 126v34M472 126v34M534 126v34M348 364v34M410 364v34M472 364v34M534 364v34"/>
+  </g>
+</svg>

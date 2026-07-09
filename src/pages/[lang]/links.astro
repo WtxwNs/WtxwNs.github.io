@@ -1,0 +1,21 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import SectionTitle from '@/components/SectionTitle.astro';
+import { siteConfig } from '@/data/profile';
+import type { Lang } from '@/data/navigation';
+export function getStaticPaths() { return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }]; }
+const lang = Astro.params.lang as Lang;
+const links = [
+  ['Email', `mailto:${siteConfig.email}`],
+  ['GitHub', siteConfig.github],
+  ['Google Scholar', siteConfig.scholar],
+  [lang === 'zh' ? '网页版简历' : 'Web CV', `/${lang}/cv`],
+  ['Southeast University', 'https://www.seu.edu.cn/']
+];
+---
+<Layout lang={lang} title={lang === 'zh' ? '链接' : 'Links'}>
+  <SectionTitle title={lang === 'zh' ? '常用链接' : 'Useful Links'} />
+  <div class="grid gap-3 md:grid-cols-2">
+    {links.map(([label, href]) => <a class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4 font-semibold text-[var(--text)] hover:border-[var(--accent)]" href={href}>{label}</a>)}
+  </div>
+</Layout>

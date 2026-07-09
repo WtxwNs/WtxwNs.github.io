@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import TOC from '@/components/TOC.astro';
+import type { Lang } from '@/data/navigation';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { lang: post.data.lang, slug: post.slug }, props: { post } }));
+}
+const lang = Astro.params.lang as Lang;
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft && data.lang === lang)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const index = allPosts.findIndex((item) => item.slug === post.slug);
+const prev = allPosts[index + 1];
+const next = allPosts[index - 1];
+---
+<Layout lang={lang} title={post.data.title} description={post.data.description}>
+  <article class="grid gap-8 lg:grid-cols-[1fr_260px]">
+    <div class="content-prose">
+      <p class="text-sm font-semibold text-[var(--accent)]">{post.data.category} · {post.data.date.toLocaleDateString()}</p>
+      <h1 class="font-serif text-5xl font-semibold leading-tight text-[var(--text)]">{post.data.title}</h1>
+      <p class="mt-4 text-lg text-[var(--muted)]">{post.data.description}</p>
+      <div class="mt-8"><Content /></div>
+      <nav class="mt-10 flex flex-wrap justify-between gap-4 border-t border-[var(--line)] pt-5 text-sm font-semibold text-[var(--accent)]">
+        {prev ? <a href={`/${lang}/blog/${prev.slug}`}>Previous: {prev.data.title}</a> : <span></span>}
+        {next ? <a href={`/${lang}/blog/${next.slug}`}>Next: {next.data.title}</a> : <span></span>}
+      </nav>
+    </div>
+    <div class="lg:sticky lg:top-24 lg:self-start"><TOC headings={headings} /></div>
+  </article>
+</Layout>

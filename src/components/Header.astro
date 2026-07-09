@@ -1,0 +1,92 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageToggle from './LanguageToggle.astro';
+import { copy } from '@/data/profile';
+import { localizedPath, navItems, type Lang } from '@/data/navigation';
+
+interface Props {
+  lang: Lang;
+  pathname: string;
+}
+
+const { lang, pathname } = Astro.props;
+const labels = copy[lang].nav;
+const menuLabel = lang === 'zh' ? '打开导航菜单' : 'Open navigation menu';
+---
+
+<header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--bg)]/90 backdrop-blur">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8" aria-label="Primary navigation">
+    <a href={localizedPath(lang)} class="font-serif text-xl font-semibold tracking-normal text-[var(--text)]">TW / 王童曦</a>
+    <div class="hidden items-center gap-1 md:flex">
+      {navItems.map((item) => {
+        const href = localizedPath(lang, item.href);
+        const active = pathname === href || (item.href && pathname.startsWith(`${href}/`));
+        return (
+          <a
+            href={href}
+            aria-current={active ? 'page' : undefined}
+            class:list={[
+              'rounded-md px-3 py-2 text-sm transition hover:bg-[var(--panel)]',
+              active ? 'text-[var(--accent)]' : 'text-[var(--muted)]'
+            ]}
+          >
+            {labels[item.key]}
+          </a>
+        );
+      })}
+    </div>
+    <div class="flex items-center gap-2">
+      <LanguageToggle lang={lang} pathname={pathname} />
+      <ThemeToggle />
+      <button
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel)] text-[var(--text)] md:hidden"
+        aria-label={menuLabel}
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-mobile-menu-button
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </nav>
+  <div id="mobile-nav" class="mx-auto hidden max-w-6xl px-4 pb-4 sm:px-6 lg:px-8 md:hidden" data-mobile-menu>
+    <div class="grid gap-1 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-2 shadow-soft">
+      {navItems.map((item) => {
+        const href = localizedPath(lang, item.href);
+        const active = pathname === href || (item.href && pathname.startsWith(`${href}/`));
+        return (
+          <a
+            href={href}
+            aria-current={active ? 'page' : undefined}
+            class:list={[
+              'rounded-md px-3 py-2 text-sm transition hover:bg-[var(--bg)]',
+              active ? 'text-[var(--accent)]' : 'text-[var(--muted)]'
+            ]}
+            data-mobile-menu-link
+          >
+            {labels[item.key]}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector('[data-mobile-menu-button]');
+  const menu = document.querySelector('[data-mobile-menu]');
+  const setOpen = (open: boolean) => {
+    menu?.classList.toggle('hidden', !open);
+    button?.setAttribute('aria-expanded', String(open));
+  };
+  button?.addEventListener('click', () => {
+    setOpen(button.getAttribute('aria-expanded') !== 'true');
+  });
+  document.querySelectorAll('[data-mobile-menu-link]').forEach((link) => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setOpen(false);
+  });
+</script>

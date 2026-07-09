@@ -1,0 +1,14 @@
+---
+import { copy, siteConfig } from '@/data/profile';
+import { localizedPath, type Lang } from '@/data/navigation';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const labels = copy[lang];
+const cvHref = siteConfig.hasPublicPdfCv ? '/cv.pdf' : localizedPath(lang, 'cv');
+---
+<div class="flex flex-wrap gap-2">
+  <a class="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white" href={`mailto:${siteConfig.email}`}>{labels.ctaEmail}</a>
+  <a class="rounded-md border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--text)] hover:border-[var(--accent)]" href={siteConfig.github}>GitHub</a>
+  <a class="rounded-md border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--text)] hover:border-[var(--accent)]" href={siteConfig.scholar}>Google Scholar</a>
+  <a class="rounded-md border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--text)] hover:border-[var(--accent)]" href={cvHref}>{labels.ctaCv}</a>
+</div>

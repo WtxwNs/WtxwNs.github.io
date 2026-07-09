@@ -1,0 +1,13 @@
+---
+interface Props { headings?: { depth: number; slug: string; text: string }[] }
+const { headings = [] } = Astro.props;
+const visible = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+{visible.length > 0 && (
+  <aside class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4 text-sm">
+    <p class="font-semibold text-[var(--text)]">On this page</p>
+    <ol class="mt-3 space-y-2 text-[var(--muted)]">
+      {visible.map((h) => <li class={h.depth === 3 ? 'pl-3' : ''}><a href={`#${h.slug}`}>{h.text}</a></li>)}
+    </ol>
+  </aside>
+)}

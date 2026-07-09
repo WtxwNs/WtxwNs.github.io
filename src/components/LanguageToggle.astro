@@ -1,0 +1,20 @@
+---
+import { localizedPath, type Lang } from '@/data/navigation';
+
+interface Props {
+  lang: Lang;
+  pathname: string;
+}
+
+const { lang, pathname } = Astro.props;
+const other = lang === 'en' ? 'zh' : 'en';
+const withoutLang = pathname.replace(/^\/(en|zh)/, '').replace(/^\//, '');
+---
+
+<a
+  href={localizedPath(other, withoutLang)}
+  class="inline-flex h-10 items-center rounded-md border border-[var(--line)] bg-[var(--panel)] px-3 text-sm text-[var(--muted)] transition hover:border-[var(--accent)] hover:text-[var(--text)]"
+  aria-label={`Switch language to ${other}`}
+>
+  {other.toUpperCase()}
+</a>

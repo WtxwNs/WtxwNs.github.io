@@ -1,0 +1,13 @@
+---
+import { siteConfig } from '@/data/profile';
+import type { Lang } from '@/data/navigation';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+
+<footer class="border-t border-[var(--line)]">
+  <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-[var(--muted)] sm:px-6 lg:px-8 md:flex-row md:items-center md:justify-between">
+    <p>© {new Date().getFullYear()} {siteConfig.name} / {siteConfig.nameZh}</p>
+    <p>{lang === 'zh' ? 'GitHub Pages。' : 'Static site, ready for Vercel and GitHub Pages.'}</p>
+  </div>
+</footer>

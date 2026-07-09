@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import HeroProfile from '@/components/HeroProfile.astro';
+import SectionTitle from '@/components/SectionTitle.astro';
+import InterestCard from '@/components/InterestCard.astro';
+import PublicationCard from '@/components/PublicationCard.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import Timeline from '@/components/Timeline.astro';
+import StatCard from '@/components/StatCard.astro';
+import { education, honors, interests, siteConfig } from '@/data/profile';
+import type { Lang } from '@/data/navigation';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
+}
+
+const lang = Astro.params.lang as Lang;
+const pubs = (await getCollection('publications')).sort((a, b) => a.data.order - b.data.order);
+const highlighted = pubs.filter((p) => p.data.highlight).sort((a, b) => a.data.order - b.data.order);
+const posts = (await getCollection('blog', ({ data }) => !data.draft && data.lang === lang)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+---
+
+<Layout lang={lang} title={lang === 'zh' ? '首页' : 'Home'}>
+  <HeroProfile lang={lang} />
+
+  <section class="py-10">
+    <SectionTitle title={lang === 'zh' ? '研究方向' : 'Research Focus'} description={lang === 'zh' ? '从理论强化学习到高效语言模型，关注可解释、可验证、可部署的学习系统。' : 'From theory RL to efficient language models, the work centers on learning systems that are principled, reliable, and practical.'} />
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {interests.slice(0, 4).map((item) => <InterestCard {...item} lang={lang} />)}
+    </div>
+  </section>
+
+  <section class="grid gap-8 py-10 lg:grid-cols-[1.25fr_0.75fr]">
+    <div>
+      <SectionTitle title={lang === 'zh' ? '代表性论文' : 'Selected Publications'} />
+      <div class="space-y-4">{highlighted.map((pub) => <PublicationCard pub={pub} compact lang={lang} />)}</div>
+    </div>
+    <div>
+      <SectionTitle title={lang === 'zh' ? '教育经历' : 'Education'} />
+      <Timeline items={education} lang={lang} />
+    </div>
+  </section>
+
+  <section class="py-10">
+    <SectionTitle title={lang === 'zh' ? '近期随笔' : 'Recent Notes'} />
+    <div class="grid gap-4 md:grid-cols-3">{posts.map((post) => <BlogCard post={post} lang={lang} />)}</div>
+  </section>
+
+  <section class="grid gap-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
+    <StatCard label={lang === 'zh' ? '论文 / 研究输出' : 'Publications / outputs'} value={pubs.length} />
+    <StatCard label={lang === 'zh' ? '研究方向' : 'Research areas'} value={interests.length} />
+    <StatCard label={lang === 'zh' ? '荣誉与服务' : 'Honors & service'} value={honors.length} />
+    <StatCard label={lang === 'zh' ? '最后更新' : 'Last updated'} value={siteConfig.lastUpdated} />
+  </section>
+</Layout>
