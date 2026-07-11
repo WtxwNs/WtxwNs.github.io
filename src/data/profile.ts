@@ -55,7 +55,7 @@ export const copy = {
     tagline: '强化学习理论 · 多智能体系统 · 大模型效率 · 学习理论',
     intro:
       '我目前就读于东南大学未来技术学院，研究兴趣集中在强化学习理论、多智能体系统与高效大语言模型。我更关心那些能够被数学结构解释、同时又能落到真实系统中的学习问题。',
-    personalLine: '我喜欢这样的问题：一个很小的几何观察，能改变整个稳定性故事。',
+    personalLine: 'Welcome to contact me',
     ctaEmail: '邮箱',
     ctaGithub: 'GitHub',
     ctaCv: '网页版简历',
@@ -72,8 +72,8 @@ export const education = [
     period: 'Aug. 2023 - Expected Jun. 2027',
     periodZh: '2023.08 - 预计 2027.06',
     detail:
-      'Ranked 3/49 in an interdisciplinary elite program selected through a second-round competitive process.',
-    detailZh: '在经二次选拔进入的交叉学科拔尖项目中排名 3/49。'
+      'An interdisciplinary elite program selected through a second-round competitive process.',
+    detailZh: '有趣的专业和课程'
   },
   {
     school: 'RWTH Aachen University',
@@ -133,25 +133,13 @@ export const interests = [
 ];
 
 export const honors = [
-  'Forward Alumni Scholarship, awarded to 3 students university-wide across undergraduate, master, and doctoral levels',
+  'Forward Alumni Scholarship, awarded to 5 students university-wide across undergraduate, master, and doctoral levels',
   'Southeast University President Scholarship',
-  'Total scholarships: RMB 45,000',
   'National First Prize, China Undergraduate Physics Tournament',
-  'More than ten additional awards across physics and electrical/electronic engineering competitions',
-  'Reviewer for AAAI 2026 and Neural Networks',
-  'President of Student Union',
-  'President of Student Association for Science and Technology',
-  'President of SEU Science Fiction Association'
 ];
 
 export const honorsZh = [
-  '至善校友奖学金，全校本科、硕士、博士共 3 人获评',
+  'Forward Alumni Scholarship，全校本硕博每年共 5 人获评',
   '东南大学校长奖学金',
-  '累计奖学金 45,000 元',
-  '中国大学生物理学术竞赛全国一等奖',
-  '十余项物理与电子电工类竞赛奖励',
-  'AAAI 2026 与 Neural Networks 审稿人',
-  '学生会主席',
-  '学生科学技术协会主席',
-  '东南大学科幻协会主席'
+  '中国大学生物理学术竞赛全国一等奖'
 ];
