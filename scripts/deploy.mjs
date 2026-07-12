@@ -8,11 +8,13 @@ const dist = join(root, 'dist');
 const publishDir = join(tmpdir(), 'tongxi-wang-homepage-deploy');
 
 function git(args, options = {}) {
-  return execFileSync('git', args, {
+  const output = execFileSync('git', args, {
     cwd: options.cwd ?? root,
     encoding: 'utf8',
     stdio: options.capture ? 'pipe' : 'inherit'
-  }).trim();
+  });
+
+  return typeof output === 'string' ? output.trim() : '';
 }
 
 if (!existsSync(dist)) {
