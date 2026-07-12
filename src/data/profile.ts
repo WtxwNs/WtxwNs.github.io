@@ -10,31 +10,28 @@ export const siteConfig = {
   location: 'Nanjing, China',
   locationZh: '中国南京',
   scholar: 'https://scholar.google.com/citations?user=IJX5_8EAAAAJ',
-  lastUpdated: '2026-07-09',
+  lastUpdated: '2026-07-13',
   hasPublicPdfCv: false,
   description:
-    '王童曦的个人学术主页，关注强化学习理论、多智能体系统、高效大语言模型与学习理论。',
+    '王童曦的个人主页，研究学习系统的动力学、稳定性与计算效率。',
   descriptionEn:
-    'Personal academic homepage of Tongxi Wang, focused on reinforcement learning theory, multi-agent systems, efficient language models, and learning theory.'
+    'Personal homepage of Tongxi Wang, studying the dynamics, stability, and efficiency of learning systems.'
 };
 
 export const copy = {
   en: {
     nav: {
-      home: 'Home',
-      academic: 'Academic',
+      research: 'Research',
       publications: 'Publications',
-      projects: 'Projects',
-      blog: 'Blog',
-      links: 'Links',
-      about: 'About',
+      systems: 'Systems',
+      writing: 'Writing',
       cv: 'CV'
     },
     heroTitle: 'Tongxi Wang / 王童曦',
-    tagline: 'Reinforcement Learning Theory · Multi-agent Systems · LLM Efficiency · Learning Theory',
+    tagline: 'I study the dynamics, stability, and efficiency of learning systems.',
     intro:
-      'I am an undergraduate researcher at Southeast University, working on reinforcement learning theory, multi-agent systems, and efficient language models. I am especially interested in learning problems where mathematical structure leads to practical systems.',
-    personalLine: 'I like problems where a small geometric observation changes the stability story.',
+      'I am an undergraduate researcher at Southeast University, working across reinforcement learning, multi-agent learning, and efficient language models. I care about mathematical structure that clarifies how learning systems behave and improves how they work in practice.',
+    personalLine: 'A small geometric observation can sometimes change the whole stability story.',
     ctaEmail: 'Email',
     ctaGithub: 'GitHub',
     ctaCv: 'Web CV',
@@ -42,20 +39,17 @@ export const copy = {
   },
   zh: {
     nav: {
-      home: '首页',
-      academic: '学术',
+      research: '研究',
       publications: '论文',
-      projects: '项目',
-      blog: '博客',
-      links: '链接',
-      about: '关于',
+      systems: '系统',
+      writing: '写作',
       cv: '简历'
     },
     heroTitle: '王童曦 / Tongxi Wang',
-    tagline: '强化学习理论 · 多智能体系统 · 大模型效率 · 学习理论',
+    tagline: '我研究学习系统的动力学、稳定性与计算效率。',
     intro:
-      '我目前就读于东南大学未来技术学院，研究兴趣集中在强化学习理论、多智能体系统与高效大语言模型。我更关心那些能够被数学结构解释、同时又能落到真实系统中的学习问题。',
-    personalLine: 'Welcome to contact me',
+      '我目前就读于东南大学未来技术学院，研究强化学习、多智能体学习与高效语言模型。我关注能够由数学结构解释、同时对真实系统有用的学习问题。',
+    personalLine: '一个很小的几何观察，有时会改变整个稳定性故事。',
     ctaEmail: '邮箱',
     ctaGithub: 'GitHub',
     ctaCv: '网页版简历',
@@ -73,7 +67,7 @@ export const education = [
     periodZh: '2023.08 - 预计 2027.06',
     detail:
       'An interdisciplinary elite program selected through a second-round competitive process.',
-    detailZh: '有趣的专业和课程'
+    detailZh: '经二次选拔进入交叉学科拔尖项目，专业排名 3/49。'
   },
   {
     school: 'RWTH Aachen University',
@@ -101,34 +95,58 @@ export const coursework = [
 
 export const interests = [
   {
-    title: 'Reinforcement Learning Theory',
-    titleZh: '强化学习理论',
-    description: 'Entropy-regularized RL, non-stationary RL, dynamic regret, and adaptive exploration.',
-    descriptionZh: '熵正则强化学习、非平稳强化学习、动态遗憾与自适应探索。'
+    index: '01',
+    title: 'Learning Dynamics',
+    titleZh: '学习动力学',
+    question: 'How can learning systems remain stable under feedback, strategic interaction, and environmental drift?',
+    questionZh: '学习系统如何在反馈、策略互动和环境漂移中保持稳定？',
+    description: 'Entropy-regularized RL, non-stationary learning, logit responses, and game dynamics.',
+    descriptionZh: '熵正则强化学习、非平稳学习、Logit 响应与博弈动力学。',
+    works: ['Tracking Drift', 'Sharp Spectral Thresholds']
   },
   {
-    title: 'Multi-agent Systems and Game Dynamics',
-    titleZh: '多智能体系统与博弈动力学',
-    description: 'Logit fixed points, softmax response systems, potential games, and learning dynamics.',
-    descriptionZh: 'Logit 不动点、softmax 响应系统、势博弈与多智能体学习动力学。'
+    index: '02',
+    title: 'Adaptive Computation',
+    titleZh: '自适应计算',
+    question: 'How should a model allocate computation according to the structure and difficulty of each input?',
+    questionZh: '模型如何依据输入的结构与难度动态分配计算量？',
+    description: 'Trainable computation paths, efficient inference, and internal routing in language models.',
+    descriptionZh: '可训练计算路径、高效推理与语言模型内部路由。',
+    works: ['Fovea-Block-Skip Transformer']
   },
   {
-    title: 'Efficient Large Language Models',
-    titleZh: '高效大语言模型',
-    description: 'Fovea-Block-Skip Transformer, inference efficiency, architecture, and routing.',
-    descriptionZh: 'Fovea-Block-Skip Transformer、推理效率、模型结构与动态计算路径。'
+    index: '03',
+    title: 'Reliable Learning',
+    titleZh: '可靠学习',
+    question: 'What observable structure tells us when a learning procedure is stable and trustworthy?',
+    questionZh: '哪些可观测结构能够判断学习过程是否稳定、可信？',
+    description: 'Spectral coverage, prompt-length selection, and stability under resampling.',
+    descriptionZh: '谱覆盖、Prompt 长度选择与重采样下的稳定性。',
+    works: ['Stability of In-Context Learning']
+  }
+];
+
+export const news = [
+  {
+    date: '2026.07',
+    en: 'Published a research note on the limits of self-generated RL training signals.',
+    zh: '发布关于自生成强化学习训练信号能力边界的论文笔记。',
+    hrefZh: '/zh/blog/ai-reasoning-ceiling-zh',
+    hrefEn: '/en/blog'
   },
   {
-    title: 'Reliable In-Context Learning',
-    titleZh: '可靠上下文学习',
-    description: 'Prompt-length selection, spectral coverage, and stability under resampling.',
-    descriptionZh: 'Prompt 长度选择、谱覆盖与 demonstration 重采样下的稳定性。'
+    date: '2026.05',
+    en: 'Released Sharp Spectral Thresholds for Logit Fixed Points on arXiv.',
+    zh: 'Sharp Spectral Thresholds for Logit Fixed Points 发布于 arXiv。',
+    hrefZh: 'https://arxiv.org/abs/2605.15651',
+    hrefEn: 'https://arxiv.org/abs/2605.15651'
   },
   {
-    title: 'Robotics and Embodied AI',
-    titleZh: '机器人与具身智能',
-    description: 'Medical robotics, robot navigation and control, and multimodal sensing.',
-    descriptionZh: '医学机器人、导航控制与多模态感知。'
+    date: '2026.01',
+    en: 'Tracking Drift and FBS became available with open-source implementations.',
+    zh: 'Tracking Drift 与 FBS 论文及开源实现上线。',
+    hrefZh: '/zh/publications',
+    hrefEn: '/en/publications'
   }
 ];
 

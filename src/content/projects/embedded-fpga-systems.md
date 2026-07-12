@@ -7,6 +7,12 @@ area: 'Embedded Systems'
 areaZh: '嵌入式系统'
 description: 'Participated in embedded/FPGA system design, hardware validation, troubleshooting, real-device testing, and soldering for system-level verification.'
 descriptionZh: '参与嵌入式 / FPGA 系统设计、硬件验证、故障排查、实物测试与焊接，支持系统级验证。'
+problem: 'Turn embedded and FPGA designs into reliable physical systems.'
+problemZh: '将嵌入式与 FPGA 设计落实为可靠的实物系统。'
+contribution: 'Worked across design, hardware validation, troubleshooting, testing, and soldering.'
+contributionZh: '参与系统设计、硬件验证、故障排查、实物测试与焊接。'
+evidence: 'Completed system-level verification on real devices.'
+evidenceZh: '完成面向真实设备的系统级验证。'
 image: '/images/projects/fpga.svg'
 links: {}
 order: 3

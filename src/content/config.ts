@@ -36,6 +36,12 @@ const projects = defineCollection({
     areaZh: z.string().optional(),
     description: z.string(),
     descriptionZh: z.string().optional(),
+    problem: z.string().optional(),
+    problemZh: z.string().optional(),
+    contribution: z.string().optional(),
+    contributionZh: z.string().optional(),
+    evidence: z.string().optional(),
+    evidenceZh: z.string().optional(),
     image: z.string().optional(),
     links: linkSchema,
     order: z.number().default(999)

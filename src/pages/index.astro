@@ -1,3 +1,16 @@
 ---
-return Astro.redirect('/zh');
+const destination = '/zh';
 ---
+
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <link rel="canonical" href="https://wtxwns.github.io/zh" />
+    <title>王童曦 / Tongxi Wang</title>
+    <script is:inline define:vars={{ destination }}>window.location.replace(destination);</script>
+  </head>
+  <body><a href={destination}>进入主页 / Enter site</a></body>
+</html>

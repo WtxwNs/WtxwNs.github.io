@@ -7,8 +7,8 @@ venue: 'ICML 2026'
 year: 2026
 status: 'Accepted'
 tags: ['Reinforcement Learning', 'Non-stationary RL', 'Entropy Regularization', 'Dynamic Regret', 'Online Learning']
-tldr: 'Adaptive Entropy Scheduling turns the entropy coefficient in non-stationary RL into a drift-responsive control signal.'
-tldrZh: '提出 Adaptive Entropy Scheduling，将非平稳强化学习中的探索强度从固定超参数改为由 online drift proxy 驱动的动态调度量。并证明调度的理论最优性。'
+tldr: 'Entropy should respond to environmental variation rather than remain a fixed hyperparameter.'
+tldrZh: '让熵系数响应环境漂移，而不再作为固定超参数。'
 contributions:
   - 'Interprets entropy coefficients as tracking-control variables rather than fixed hyperparameters.'
   - 'Derives a tracking-stability trade-off from dynamic mirror descent and non-stationary OCO.'
@@ -21,5 +21,5 @@ links:
   arxiv: 'https://arxiv.org/abs/2601.19624'
   code: 'https://github.com/WtxwNs/AES'
 highlight: true
-order: 2
+order: 1
 ---

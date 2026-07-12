@@ -7,8 +7,8 @@ venue: 'arXiv preprint / under review'
 year: 2026
 status: 'Under Review'
 tags: ['Learning Theory', 'Game Dynamics', 'Softmax', 'Logit Fixed Points', 'Stability']
-tldr: 'A sharp spectral condition for uniqueness and global convergence in softmax self-feedback systems.'
-tldrZh: '刻画 softmax 自反馈系统唯一均衡与全局收敛的 sharp 谱条件，指出经典判据过于保守。'
+tldr: 'A factor-of-two geometric correction moves the classical stability certificate to the phase transition.'
+tldrZh: '利用单纯形切空间几何，将经典稳定阈值推进至相变点。'
 contributions:
   - 'Studies softmax closed-loop feedback structures arising in entropy-regularized policy updates and multi-agent logit responses.'
   - 'Shows that classical criteria are conservative because they ignore payoff-shift invariance and simplex tangent geometry.'
@@ -20,5 +20,5 @@ contributionsZh:
 links:
   arxiv: 'https://arxiv.org/abs/2605.15651'
 highlight: true
-order: 3
+order: 2
 ---

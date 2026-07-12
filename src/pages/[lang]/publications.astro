@@ -10,37 +10,17 @@ export function getStaticPaths() {
 }
 const lang = Astro.params.lang as Lang;
 const pubs = (await getCollection('publications')).sort((a, b) => a.data.order - b.data.order);
-const tags = [...new Set(pubs.flatMap((p) => p.data.tags))].sort();
-const years = [...new Set(pubs.map((p) => p.data.year))].sort((a, b) => b - a);
-const statuses = [...new Set(pubs.map((p) => p.data.status))];
 ---
 <Layout lang={lang} title={lang === 'zh' ? '论文' : 'Publications'}>
-  <SectionTitle title={lang === 'zh' ? '论文与研究输出' : 'Publications'} description={lang === 'zh' ? '支持按标签、年份和状态进行静态筛选。' : 'Static filters by tag, year, and status are implemented client-side for a lightweight archive.'} />
-  <div class="mb-6 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4">
-    <input id="pub-search" class="w-full rounded-md border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-[var(--text)]" placeholder="Search title, author, venue, tag" aria-label="Search publications" />
-    <div class="mt-4 flex flex-wrap gap-2">
-      {[...years.map(String), ...statuses, ...tags].map((item) => <button class="rounded-full border border-[var(--line)] px-3 py-1 text-xs text-[var(--muted)]" data-filter={item}>{item}</button>)}
-      <button class="rounded-full border border-[var(--line)] px-3 py-1 text-xs text-[var(--muted)]" data-filter="">All</button>
-    </div>
-  </div>
-  <div class="space-y-5" id="pub-list">
-    {pubs.map((pub) => (
-      <div data-pub={`${pub.data.title} ${pub.data.tldrZh ?? ''} ${pub.data.authors.join(' ')} ${pub.data.venue} ${pub.data.year} ${pub.data.status} ${pub.data.tags.join(' ')}`.toLowerCase()}>
-        <PublicationCard pub={pub} lang={lang} />
-      </div>
-    ))}
-  </div>
-  <script>
-    const input = document.querySelector('#pub-search') as HTMLInputElement | null;
-    const cards = Array.from(document.querySelectorAll('[data-pub]')) as HTMLElement[];
-    const apply = (term: string) => cards.forEach((card) => (card.hidden = !card.dataset.pub?.includes(term.toLowerCase())));
-    input?.addEventListener('input', () => apply(input.value));
-    document.querySelectorAll('[data-filter]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const term = (button as HTMLElement).dataset.filter ?? '';
-        if (input) input.value = term;
-        apply(term);
-      });
-    });
-  </script>
+  <section class="py-10">
+    <SectionTitle
+      eyebrow="Publications"
+      title={lang === 'zh' ? '论文与研究输出' : 'Publications'}
+      description={lang === 'zh' ? '按研究进展排序；标题下方用一句话说明每项工作的核心判断。' : 'Ordered by research priority, with one sentence stating the central claim of each project.'}
+    />
+    <p class="max-w-3xl text-sm leading-relaxed text-[var(--muted)]">
+      {lang === 'zh' ? 'Google Scholar 提供最新的引用与版本信息。' : 'Google Scholar contains the latest citation and version information.'}
+    </p>
+  </section>
+  <div>{pubs.map((pub) => <PublicationCard pub={pub} lang={lang} />)}</div>
 </Layout>

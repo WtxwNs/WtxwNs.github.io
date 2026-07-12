@@ -15,6 +15,10 @@ const { title, lang = 'en' } = Astro.props;
 const description = Astro.props.description ?? (lang === 'zh' ? siteConfig.description : siteConfig.descriptionEn);
 const pageTitle = title ? `${title} | ${siteConfig.name}` : `${siteConfig.name} | Academic Homepage`;
 const canonical = new URL(Astro.url.pathname, siteConfig.site).toString();
+const unlocalizedPath = Astro.url.pathname.replace(/^\/(en|zh)/, '') || '/';
+const zhUrl = new URL(`/zh${unlocalizedPath === '/' ? '' : unlocalizedPath}`, siteConfig.site).toString();
+const enUrl = new URL(`/en${unlocalizedPath === '/' ? '' : unlocalizedPath}`, siteConfig.site).toString();
+const socialImage = new URL('/og-card.png', siteConfig.site).toString();
 ---
 
 <!doctype html>
@@ -26,10 +30,20 @@ const canonical = new URL(Astro.url.pathname, siteConfig.site).toString();
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={zhUrl} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content="Tongxi Wang — learning dynamics, stability, and efficient computation" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
     <script is:inline>
       const theme = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -49,7 +63,7 @@ const canonical = new URL(Astro.url.pathname, siteConfig.site).toString();
   </head>
   <body>
     <Header lang={lang} pathname={Astro.url.pathname} />
-    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
       <slot />
     </main>
     <Footer lang={lang} />

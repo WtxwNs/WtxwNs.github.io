@@ -7,8 +7,8 @@ venue: 'ACL 2026'
 year: 2026
 status: 'Accepted'
 tags: ['Large Language Models', 'Efficient Inference', 'Transformer Architecture', 'Adaptive Computation']
-tldr: 'Fovea-Block-Skip Transformer moves LLM acceleration from external decoding tricks to internal adaptive compute.'
-tldrZh: '提出 Fovea-Block-Skip Transformer，将 LLM 推理加速从外部 speculative decoding 转为模型内部的 adaptive compute policy。'
+tldr: 'Make the computation path itself a learnable decision inside the Transformer.'
+tldrZh: '将计算路径变成 Transformer 内部可学习的决策变量。'
 contributions:
   - 'Introduces preview, block, and skip modules for learning a quality-compute trade-off inside the model.'
   - 'Trains the computation path itself instead of attaching external acceleration mechanisms only at inference time.'
@@ -21,5 +21,5 @@ links:
   arxiv: 'https://arxiv.org/abs/2601.21708'
   code: 'https://github.com/WtxwNs/FBS'
 highlight: true
-order: 1
+order: 3
 ---

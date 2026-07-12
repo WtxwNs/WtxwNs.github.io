@@ -20,6 +20,6 @@ contributionsZh:
 links:
   arxiv: 'https://arxiv.org/abs/2508.01394'
   code: 'https://github.com/WtxwNs/BACH'
-highlight: true
+highlight: false
 order: 4
 ---

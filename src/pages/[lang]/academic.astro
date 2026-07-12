@@ -2,11 +2,9 @@
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import SectionTitle from '@/components/SectionTitle.astro';
-import InterestCard from '@/components/InterestCard.astro';
+import ResearchTrackCard from '@/components/ResearchTrackCard.astro';
 import PublicationCard from '@/components/PublicationCard.astro';
-import ProjectCard from '@/components/ProjectCard.astro';
-import Timeline from '@/components/Timeline.astro';
-import { coursework, education, honors, honorsZh, interests } from '@/data/profile';
+import { interests } from '@/data/profile';
 import type { Lang } from '@/data/navigation';
 
 export function getStaticPaths() {
@@ -14,56 +12,60 @@ export function getStaticPaths() {
 }
 
 const lang = Astro.params.lang as Lang;
-const pubs = (await getCollection('publications')).sort((a, b) => a.data.order - b.data.order);
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const pubs = (await getCollection('publications'))
+  .filter((pub) => pub.data.highlight)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout lang={lang} title={lang === 'zh' ? '学术' : 'Academic'}>
-  <section class="py-8">
+<Layout lang={lang} title={lang === 'zh' ? '研究' : 'Research'}>
+  <section class="max-w-4xl py-12">
     <SectionTitle
-      title={lang === 'zh' ? '学术主页' : 'Academic Profile'}
-      description={lang === 'zh' ? '研究兴趣、论文、项目与服务的集中入口。' : 'A compact view of research interests, publications, projects, and service.'}
+      eyebrow="Research"
+      title={lang === 'zh' ? '理解学习系统如何变化、稳定与计算' : 'Understanding how learning systems adapt, stabilize, and compute'}
+      description={lang === 'zh' ? '我的工作从强化学习与博弈动力学中的理论问题出发，也关心这些结构能否导向更可靠、更高效的算法。' : 'My work begins with theoretical questions in reinforcement learning and game dynamics, then asks whether the resulting structure can support more reliable and efficient algorithms.'}
     />
-    <p class="max-w-3xl text-[var(--muted)]">
+    <p class="max-w-3xl text-lg leading-relaxed text-[var(--muted)]">
       {lang === 'zh'
-        ? '王童曦目前就读于东南大学未来技术学院，研究强化学习理论、多智能体系统、高效大语言模型与可靠上下文学习。'
-        : 'Tongxi Wang is an undergraduate researcher at the School of Future Technology, Southeast University, working on reinforcement learning theory, multi-agent systems, efficient LLMs, and reliable in-context learning.'}
+        ? '我尤其喜欢那些由一个简单数学对象串起多个领域的问题：熵系数可以是跟踪环境变化的控制量，softmax Jacobian 的几何可以决定全局稳定性，计算路径也可以成为模型学习的对象。'
+        : 'I am especially drawn to simple mathematical objects that connect different areas: an entropy coefficient can become a control variable for tracking drift, softmax geometry can determine global stability, and the computation path itself can become learnable.'}
     </p>
-    <a class="mt-5 inline-flex rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white" href={`/${lang}/cv`}>
-      {lang === 'zh' ? '查看网页版简历' : 'View Web CV'}
-    </a>
   </section>
 
-  <section class="py-8">
-    <SectionTitle title={lang === 'zh' ? '研究兴趣' : 'Research Interests'} />
-    <div class="grid gap-4 md:grid-cols-2">{interests.map((item) => <InterestCard {...item} lang={lang} />)}</div>
+  <section class="py-10">
+    <SectionTitle
+      title={lang === 'zh' ? '研究主线' : 'Research threads'}
+      description={lang === 'zh' ? '三条主线共享同一个目标：用结构性的理解换取更可预测的学习行为。' : 'The common goal is to turn structural understanding into more predictable learning behavior.'}
+    />
+    <div class="grid gap-x-8 lg:grid-cols-3">{interests.map((item) => <ResearchTrackCard {...item} lang={lang} />)}</div>
   </section>
 
-  <section class="py-8">
-    <SectionTitle title={lang === 'zh' ? '论文与预印本' : 'Selected Publications'} />
-    <div class="space-y-4">{pubs.map((pub) => <PublicationCard pub={pub} lang={lang} />)}</div>
+  <section class="py-10">
+    <SectionTitle
+      title={lang === 'zh' ? '代表性工作' : 'Selected work'}
+      description={lang === 'zh' ? '以下工作分别对应环境变化、反馈稳定性和动态计算。' : 'These projects address environmental drift, feedback stability, and adaptive computation.'}
+    />
+    <div>{pubs.map((pub) => <PublicationCard pub={pub} compact lang={lang} />)}</div>
   </section>
 
-  <section class="py-8">
-    <SectionTitle title={lang === 'zh' ? '研究项目' : 'Research Projects'} />
-    <div class="grid gap-5 md:grid-cols-3">{projects.map((project) => <ProjectCard project={project} lang={lang} />)}</div>
-  </section>
-
-  <section class="grid gap-8 py-8 lg:grid-cols-2">
-    <div>
-      <SectionTitle title={lang === 'zh' ? '教育经历' : 'Education'} />
-      <Timeline items={education} lang={lang} />
-    </div>
-    <div>
-      <SectionTitle title={lang === 'zh' ? '课程' : 'Coursework'} />
-      <p class="text-sm text-[var(--muted)]">{coursework.join(' · ')}</p>
-    </div>
-  </section>
-
-  <section class="py-8">
-    <SectionTitle title={lang === 'zh' ? '荣誉与服务' : 'Honors & Service'} />
-    <ul class="space-y-3 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-sm text-[var(--muted)]">
-      {(lang === 'zh' ? honorsZh : honors).map((item) => <li>{item}</li>)}
-    </ul>
+  <section class="grid gap-8 py-10 md:grid-cols-3">
+    {[
+      {
+        title: lang === 'zh' ? '结构' : 'Structure',
+        text: lang === 'zh' ? '先找出真正控制行为的数学对象，再决定需要怎样的算法。' : 'Identify the mathematical object that controls behavior before designing the algorithm.'
+      },
+      {
+        title: lang === 'zh' ? '边界' : 'Boundaries',
+        text: lang === 'zh' ? '关心结论在何处成立、何处失效，以及阈值是否接近真实相变。' : 'Ask where a result holds, where it fails, and whether its threshold reaches the actual transition.'
+      },
+      {
+        title: lang === 'zh' ? '系统' : 'Systems',
+        text: lang === 'zh' ? '用工程约束检验理论抽象是否抓住了真正重要的变量。' : 'Use engineering constraints to test whether the abstraction captures the variables that matter.'
+      }
+    ].map((item) => (
+      <article class="border-t-2 border-[var(--accent)] pt-4">
+        <h3 class="font-serif text-2xl font-semibold text-[var(--text)]">{item.title}</h3>
+        <p class="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
+      </article>
+    ))}
   </section>
 </Layout>

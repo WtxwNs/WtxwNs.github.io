@@ -7,21 +7,16 @@ import type { Lang } from '@/data/navigation';
 export function getStaticPaths() { return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }]; }
 const lang = Astro.params.lang as Lang;
 const posts = (await getCollection('blog', ({ data }) => !data.draft && data.lang === lang)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const categories = ['Research', 'Technical', 'Notes', 'Life'];
 ---
-<Layout lang={lang} title={lang === 'zh' ? '博客' : 'Blog'}>
-  <SectionTitle title={lang === 'zh' ? '研究博客' : 'Research Blog'} description={lang === 'zh' ? '研究笔记、技术记录、随笔与生活观察。' : 'Research notes, technical logs, essays, and occasional personal writing.'} />
-  <div class="mb-6 flex flex-wrap gap-2">{categories.map((cat) => <button class="rounded-full border border-[var(--line)] px-3 py-1 text-sm text-[var(--muted)]" data-category={cat}>{cat}</button>)}<button class="rounded-full border border-[var(--line)] px-3 py-1 text-sm text-[var(--muted)]" data-category="">All</button></div>
-  <div class="grid gap-4 md:grid-cols-2" id="blog-list">
-    {posts.map((post) => <div data-post-category={post.data.category}><BlogCard post={post} lang={lang} /></div>)}
+<Layout lang={lang} title={lang === 'zh' ? '写作' : 'Writing'}>
+  <section class="py-10">
+    <SectionTitle
+      eyebrow="Writing"
+      title={lang === 'zh' ? '研究笔记与思考' : 'Research notes and essays'}
+      description={lang === 'zh' ? '记录论文阅读、研究判断和工程实践中值得保留的想法。' : 'Notes on papers, research judgment, and ideas worth preserving from engineering practice.'}
+    />
+  </section>
+  <div class="grid gap-4 md:grid-cols-2">
+    {posts.map((post) => <BlogCard post={post} lang={lang} />)}
   </div>
-  <script>
-    const posts = Array.from(document.querySelectorAll('[data-post-category]')) as HTMLElement[];
-    document.querySelectorAll('[data-category]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const category = (button as HTMLElement).dataset.category ?? '';
-        posts.forEach((post) => (post.hidden = !!category && post.dataset.postCategory !== category));
-      });
-    });
-  </script>
 </Layout>

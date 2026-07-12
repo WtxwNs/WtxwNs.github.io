@@ -2,6 +2,14 @@
 
 Personal academic homepage for Tongxi Wang / 王童曦, built with Astro, TypeScript, Tailwind CSS, MDX, and Astro Content Collections.
 
+The information architecture balances academic research with systems work:
+
+- Research: learning dynamics, adaptive computation, and reliable learning
+- Publications: complete research archive
+- Systems: medical robotics, agent workflows, and embedded/FPGA work
+- Writing: research notes and essays
+- CV: education, publications, projects, coursework, and honors
+
 The public site is configured for:
 
 ```text
@@ -35,6 +43,12 @@ corepack pnpm preview
 corepack pnpm format
 ```
 
+## Repository and Deployment
+
+The `source` branch is the single source of truth. Push source changes there; GitHub Actions builds the site and publishes the generated `dist` artifact to GitHub Pages. Do not manually copy individual generated HTML files into `main`.
+
+In repository settings, configure Pages to use **GitHub Actions** as the deployment source.
+
 ## Repository Hygiene
 
 Do not commit generated or installed files:
@@ -56,6 +70,8 @@ These are already covered by `.gitignore`.
 - Projects: `src/content/projects/*.md`
 - Blog posts: `src/content/blog/*.mdx`
 - Profile data: `src/data/profile.ts`
+- Monogram: `src/components/Monogram.astro`
+- Social preview: `public/og-card.svg` and `public/og-card.png`
 
 Only add publication links when they are real. Empty, missing, or `#todo` links are intentionally hidden by the UI.
 
@@ -71,7 +87,7 @@ Do not expose a phone number anywhere in data, pages, generated content, README 
 
 ### GitHub Pages
 
-The workflow in `.github/workflows/deploy.yml` builds the static site and deploys `dist` to GitHub Pages. In repository settings, enable Pages with GitHub Actions as the source.
+The workflow in `.github/workflows/deploy.yml` runs on pushes to `source`, builds the static site, and deploys `dist` to GitHub Pages.
 
 ### Vercel
 

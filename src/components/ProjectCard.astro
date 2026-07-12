@@ -11,6 +11,12 @@ interface Props {
       areaZh?: string;
       description: string;
       descriptionZh?: string;
+      problem?: string;
+      problemZh?: string;
+      contribution?: string;
+      contributionZh?: string;
+      evidence?: string;
+      evidenceZh?: string;
       image?: string;
       links: Record<string, string | null>;
     };
@@ -23,14 +29,28 @@ const title = lang === 'zh' ? d.titleZh ?? d.title : d.title;
 const role = lang === 'zh' ? d.roleZh ?? d.role : d.role;
 const area = lang === 'zh' ? d.areaZh ?? d.area : d.area;
 const description = lang === 'zh' ? d.descriptionZh ?? d.description : d.description;
+const problem = lang === 'zh' ? d.problemZh ?? d.problem : d.problem;
+const contribution = lang === 'zh' ? d.contributionZh ?? d.contribution : d.contribution;
+const evidence = lang === 'zh' ? d.evidenceZh ?? d.evidence : d.evidence;
 const links = Object.entries(d.links).filter(([, href]) => typeof href === 'string' && href.length > 0 && !href.startsWith('#todo'));
 ---
-<article class="overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--panel)] shadow-soft transition hover:-translate-y-0.5 hover:border-[var(--accent)]">
-  {d.image && <img src={d.image} alt="" class="h-44 w-full object-cover" loading="lazy" />}
-  <div class="p-5">
-    <p class="text-sm font-semibold text-[var(--accent)]">{role}{area ? ` · ${area}` : ''}</p>
-    <h3 class="mt-1 font-serif text-2xl font-semibold text-[var(--text)]">{title}</h3>
-    <p class="mt-3 text-sm text-[var(--muted)]">{description}</p>
+<article class="group overflow-hidden border-t border-[var(--line)] bg-[var(--bg)] pt-5 transition hover:border-[var(--accent)]">
+  {d.image && (
+    <div class="overflow-hidden rounded-md border border-[var(--line)] bg-[var(--panel)]">
+      <img src={d.image} alt="" class="h-40 w-full object-cover transition duration-300 group-hover:scale-[1.02]" loading="lazy" />
+    </div>
+  )}
+  <div class="py-5">
+    <p class="font-mono text-xs font-semibold uppercase tracking-[0.08em] text-[var(--accent)]">{role}{area ? ` · ${area}` : ''}</p>
+    <h3 class="mt-2 font-serif text-2xl font-semibold leading-tight text-[var(--text)]">{title}</h3>
+    <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">{description}</p>
+    {(problem || contribution || evidence) && (
+      <dl class="mt-5 space-y-3 border-l border-[var(--line)] pl-4 text-sm">
+        {problem && <div><dt class="font-semibold text-[var(--text)]">{lang === 'zh' ? '问题' : 'Problem'}</dt><dd class="mt-0.5 text-[var(--muted)]">{problem}</dd></div>}
+        {contribution && <div><dt class="font-semibold text-[var(--text)]">{lang === 'zh' ? '工作' : 'My work'}</dt><dd class="mt-0.5 text-[var(--muted)]">{contribution}</dd></div>}
+        {evidence && <div><dt class="font-semibold text-[var(--text)]">{lang === 'zh' ? '验证' : 'Evidence'}</dt><dd class="mt-0.5 text-[var(--muted)]">{evidence}</dd></div>}
+      </dl>
+    )}
     {links.length > 0 && (
       <div class="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-[var(--accent)]">
         {links.map(([label, href]) => <a href={href}>{label}</a>)}

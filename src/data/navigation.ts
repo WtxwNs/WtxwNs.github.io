@@ -5,13 +5,10 @@ export type Lang = keyof typeof copy;
 export const languages: Lang[] = ['en', 'zh'];
 
 export const navItems = [
-  { key: 'home', href: '' },
-  { key: 'academic', href: 'academic' },
+  { key: 'research', href: 'academic' },
   { key: 'publications', href: 'publications' },
-  { key: 'projects', href: 'projects' },
-  { key: 'blog', href: 'blog' },
-  { key: 'links', href: 'links' },
-  { key: 'about', href: 'about' },
+  { key: 'systems', href: 'projects' },
+  { key: 'writing', href: 'blog' },
   { key: 'cv', href: 'cv' }
 ] as const;
 

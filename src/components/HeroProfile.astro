@@ -1,5 +1,6 @@
 ---
 import SocialLinks from './SocialLinks.astro';
+import Monogram from './Monogram.astro';
 import { copy, siteConfig } from '@/data/profile';
 import type { Lang } from '@/data/navigation';
 interface Props { lang: Lang }
@@ -8,19 +9,20 @@ const t = copy[lang];
 const institution = lang === 'zh' ? siteConfig.institutionZh : siteConfig.institution;
 const location = lang === 'zh' ? siteConfig.locationZh : siteConfig.location;
 ---
-<section class="grid gap-8 py-8 md:grid-cols-[1.4fr_0.6fr] md:items-center">
+<section class="grid min-h-[68vh] gap-12 py-12 md:grid-cols-[1.35fr_0.65fr] md:items-center lg:py-16">
   <div>
     <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">{institution}</p>
-    <h1 class="mt-4 font-serif text-5xl font-semibold leading-tight text-[var(--text)] sm:text-6xl">{t.heroTitle}</h1>
-    <p class="mt-4 text-lg font-medium text-[var(--accent)]">{t.tagline}</p>
-    <p class="mt-5 max-w-3xl text-lg text-[var(--muted)]">{t.intro}</p>
-    <p class="mt-4 max-w-3xl border-l-4 border-[var(--accent)] pl-4 font-serif text-xl text-[var(--text)]">{t.personalLine}</p>
-    <div class="mt-6"><SocialLinks lang={lang} /></div>
-    <p class="mt-4 text-sm text-[var(--muted)]">{location} · {siteConfig.email}</p>
-  </div>
-  <div class="justify-self-start md:justify-self-end">
-    <div class="flex h-48 w-48 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--panel)] shadow-soft">
-      <span class="font-serif text-5xl font-semibold text-[var(--accent)]">{lang === 'zh' ? '王' : 'TW'}</span>
+    <h1 class="mt-5 max-w-4xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.025em] text-[var(--text)] sm:text-7xl">{t.heroTitle}</h1>
+    <p class="mt-6 max-w-3xl font-serif text-2xl font-medium leading-snug text-[var(--accent)] sm:text-3xl">{t.tagline}</p>
+    <p class="mt-6 max-w-3xl text-lg leading-relaxed text-[var(--muted)]">{t.intro}</p>
+    <div class="mt-7"><SocialLinks lang={lang} /></div>
+    <div class="mt-7 flex flex-col gap-2 border-l-2 border-[var(--accent)] pl-4 sm:flex-row sm:items-center sm:gap-4">
+      <p class="font-serif text-lg text-[var(--text)]">{t.personalLine}</p>
+      <span class="hidden text-[var(--line)] sm:inline">/</span>
+      <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">{location}</p>
     </div>
+  </div>
+  <div class="hidden justify-self-end md:block">
+    <Monogram label={lang === 'zh' ? '王童曦 TW 个人标识' : 'Tongxi Wang TW monogram'} />
   </div>
 </section>
