@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
+import EditorialHomeZh from '@/components/EditorialHomeZh.astro';
 import HeroProfile from '@/components/HeroProfile.astro';
 import SectionTitle from '@/components/SectionTitle.astro';
 import ResearchTrackCard from '@/components/ResearchTrackCard.astro';
@@ -18,73 +19,87 @@ const lang = Astro.params.lang as Lang;
 const pubs = (await getCollection('publications')).sort((a, b) => a.data.order - b.data.order);
 const highlighted = pubs.filter((p) => p.data.highlight).sort((a, b) => a.data.order - b.data.order);
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const posts = (await getCollection('blog', ({ data }) => !data.draft && data.lang === lang)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 2);
+const posts = (await getCollection('blog', ({ data }) => !data.draft && data.lang === lang))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
 ---
 
-<Layout lang={lang} title={lang === 'zh' ? '首页' : 'Home'}>
-  <HeroProfile lang={lang} />
+{
+  lang === 'zh' ? (
+    <EditorialHomeZh />
+  ) : (
+    <Layout lang={lang} title="Home">
+      <HeroProfile lang={lang} />
 
-  <section class="py-12" id="research">
-    <SectionTitle
-      eyebrow={lang === 'zh' ? 'Research agenda' : 'Research agenda'}
-      title={lang === 'zh' ? '三个持续关心的问题' : 'Three questions that connect my work'}
-      description={lang === 'zh' ? '研究主题会变化，但我持续关注学习系统如何响应反馈、分配计算并保持可靠。' : 'The applications change; the recurring questions concern feedback, computation, and reliability.'}
-    />
-    <div class="grid gap-x-8 lg:grid-cols-3">
-      {interests.map((item) => <ResearchTrackCard {...item} lang={lang} />)}
-    </div>
-  </section>
+      <section class="py-12" id="research">
+        <SectionTitle
+          eyebrow="Research agenda"
+          title="Three questions that connect my work"
+          description="The applications change; the recurring questions concern feedback, computation, and reliability."
+        />
+        <div class="grid gap-x-8 lg:grid-cols-3">
+          {interests.map((item) => <ResearchTrackCard {...item} lang={lang} />)}
+        </div>
+      </section>
 
-  <section class="py-12">
-    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-      <SectionTitle
-        eyebrow={lang === 'zh' ? 'Selected research' : 'Selected research'}
-        title={lang === 'zh' ? '代表性工作' : 'Selected work'}
-        description={lang === 'zh' ? '每项工作对应一个清楚的问题和一个可验证的核心判断。' : 'Each project starts from a concrete question and aims for a testable central claim.'}
-      />
-      <a href={`/${lang}/publications`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
-        {lang === 'zh' ? '查看全部论文 →' : 'All publications →'}
-      </a>
-    </div>
-    <div>{highlighted.map((pub) => <PublicationCard pub={pub} compact lang={lang} />)}</div>
-  </section>
+      <section class="py-12">
+        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <SectionTitle
+            eyebrow="Selected research"
+            title="Selected work"
+            description="Each project starts from a concrete question and aims for a testable central claim."
+          />
+          <a href={`/${lang}/publications`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
+            All publications →
+          </a>
+        </div>
+        <div>{highlighted.map((pub) => <PublicationCard pub={pub} compact lang={lang} />)}</div>
+      </section>
 
-  <section class="py-12">
-    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-      <SectionTitle
-        eyebrow={lang === 'zh' ? 'Selected systems' : 'Selected systems'}
-        title={lang === 'zh' ? '从理论到真实系统' : 'From theory to physical systems'}
-        description={lang === 'zh' ? '机器人、医疗 AI 与嵌入式系统经历构成了我理解真实约束的工程基础。' : 'Robotics, medical AI, and embedded systems ground my research in real constraints.'}
-      />
-      <a href={`/${lang}/projects`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
-        {lang === 'zh' ? '查看系统经历 →' : 'All systems work →'}
-      </a>
-    </div>
-    <div class="grid gap-7 md:grid-cols-3">{projects.map((project) => <ProjectCard project={project} lang={lang} />)}</div>
-  </section>
+      <section class="py-12">
+        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <SectionTitle
+            eyebrow="Selected systems"
+            title="From theory to physical systems"
+            description="Robotics, medical AI, and embedded systems ground my research in real constraints."
+          />
+          <a href={`/${lang}/projects`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
+            All systems work →
+          </a>
+        </div>
+        <div class="grid gap-7 md:grid-cols-3">
+          {projects.map((project) => <ProjectCard project={project} lang={lang} />)}
+        </div>
+      </section>
 
-  <section class="grid gap-10 py-12 lg:grid-cols-[0.85fr_1.15fr]">
-    <div>
-      <SectionTitle eyebrow="Updates" title={lang === 'zh' ? '近期动态' : 'News'} />
-      <ol class="border-t border-[var(--line)]">
-        {news.map((item) => (
-          <li class="grid grid-cols-[76px_1fr] gap-3 border-b border-[var(--line)] py-4 text-sm">
-            <time class="font-mono text-xs font-semibold text-[var(--accent)]">{item.date}</time>
-            <a href={lang === 'zh' ? item.hrefZh : item.hrefEn} class="text-[var(--muted)] hover:text-[var(--text)]">
-              {lang === 'zh' ? item.zh : item.en}
+      <section class="grid gap-10 py-12 lg:grid-cols-[0.85fr_1.15fr]">
+        <div>
+          <SectionTitle eyebrow="Updates" title="News" />
+          <ol class="border-t border-[var(--line)]">
+            {
+              news.map((item) => (
+                <li class="grid grid-cols-[76px_1fr] gap-3 border-b border-[var(--line)] py-4 text-sm">
+                  <time class="font-mono text-xs font-semibold text-[var(--accent)]">{item.date}</time>
+                  <a href={item.hrefEn} class="text-[var(--muted)] hover:text-[var(--text)]">
+                    {item.en}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+        <div>
+          <div class="flex items-end justify-between gap-4">
+            <SectionTitle eyebrow="Writing" title="Recent writing" />
+            <a href={`/${lang}/blog`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
+              All writing →
             </a>
-          </li>
-        ))}
-      </ol>
-    </div>
-    <div>
-      <div class="flex items-end justify-between gap-4">
-        <SectionTitle eyebrow="Writing" title={lang === 'zh' ? '近期写作' : 'Recent writing'} />
-        <a href={`/${lang}/blog`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
-          {lang === 'zh' ? '全部文章 →' : 'All writing →'}
-        </a>
-      </div>
-      <div class="grid gap-4 sm:grid-cols-2">{posts.map((post) => <BlogCard post={post} lang={lang} />)}</div>
-    </div>
-  </section>
-</Layout>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            {posts.map((post) => <BlogCard post={post} lang={lang} />)}
+          </div>
+        </div>
+      </section>
+    </Layout>
+  )
+}
