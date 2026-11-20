@@ -6,6 +6,8 @@ import remarkMath from 'remark-math';
 import rehypeSlug from 'rehype-slug';
 
 export default defineConfig({
+  devToolbar: { enabled: false },
+  vite: { server: { watch: { ignored: ['**/.site-check/**'] } } },
   site: 'https://wtxwns.github.io',
   integrations: [
     mdx({

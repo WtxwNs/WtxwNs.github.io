@@ -4,13 +4,13 @@
 
 :root {
   color-scheme: light;
-  --bg: #fbfaf7;
+  --bg: #fcfdfb;
   --panel: #ffffff;
   --text: #172033;
   --muted: #586176;
   --line: #dfe5ee;
-  --accent: #256b8f;
-  --accent-soft: #e8f2f6;
+  --accent: #20695e;
+  --accent-soft: #e2f0e9;
 }
 
 .dark {
@@ -59,7 +59,13 @@ a {
 
 .content-prose {
   max-width: 72ch;
+  overflow-wrap: anywhere;
 }
+
+.content-prose p + p { margin-top: 1em; }
+.content-prose :is(h2, h3) { margin: 1.5em 0 .5em; font-size: 1.5rem; font-weight: 600; }
+.content-prose img { max-width: 100%; height: auto; margin-block: 1.25rem; }
+.content-prose :is(ol, ul) { padding-inline-start: 1.5em; list-style: revert; }
 
 .content-prose h2,
 .content-prose h3 {

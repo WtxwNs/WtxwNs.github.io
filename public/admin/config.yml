@@ -1,0 +1,137 @@
+backend:
+  name: github
+  repo: WtxwNs/WtxwNs.github.io
+  branch: source
+  auth_methods: [token]
+site_url: https://wtxwns.github.io
+display_url: https://wtxwns.github.io
+media_folder: public/uploads
+public_folder: /uploads
+app_title: 主页内容编辑
+slug:
+  encoding: unicode
+collections:
+  - name: profile
+    label: 个人资料
+    files:
+      - name: home
+        label: 首页资料
+        file: src/data/home.json
+        fields:
+          - {name: nameZh, label: 中文姓名, widget: string}
+          - {name: name, label: 英文姓名, widget: string}
+          - {name: portrait, label: 个人照片, widget: image, required: false}
+          - {name: institutionZh, label: 中文机构, widget: string}
+          - {name: institution, label: 英文机构, widget: string}
+          - {name: locationZh, label: 中文所在地, widget: string}
+          - {name: location, label: 英文所在地, widget: string}
+          - {name: taglineZh, label: 中文研究概述, widget: text}
+          - {name: tagline, label: 英文研究概述, widget: text}
+          - {name: introZh, label: 中文自我介绍, widget: text}
+          - {name: intro, label: 英文自我介绍, widget: text}
+          - {name: email, label: 联系邮箱, widget: string, type: email}
+          - {name: github, label: GitHub, widget: string, type: url}
+          - {name: scholar, label: Google Scholar, widget: string, type: url}
+          - name: systemsZh
+            label: 中文首页精选项目
+            widget: list
+            fields:
+              - {name: title, label: 名称}
+              - {name: area, label: 领域}
+              - {name: description, label: 项目介绍, widget: text}
+              - {name: href, label: 项目链接}
+      - name: academic
+        label: 研究方向与荣誉
+        file: src/data/academic.json
+        fields:
+          - name: interests
+            label: 研究方向
+            widget: list
+            fields:
+              - {name: index, label: 序号}
+              - {name: title, label: 英文名称}
+              - {name: titleZh, label: 中文名称}
+              - {name: question, label: 英文研究问题, widget: text}
+              - {name: questionZh, label: 中文研究问题, widget: text}
+              - {name: description, label: 英文简介, widget: text}
+              - {name: descriptionZh, label: 中文简介, widget: text}
+              - {name: works, label: 相关论文, widget: list}
+          - {name: honors, label: 英文荣誉与服务, widget: list}
+          - {name: honorsZh, label: 中文荣誉与服务, widget: list}
+  - name: blog
+    label: 博客
+    folder: src/content/blog
+    create: true
+    extension: md
+    format: yaml-frontmatter
+    slug: '{{slug}}'
+    preview_path: '{{lang}}/blog/{{slug}}/'
+    fields:
+      - {name: title, label: 标题, widget: string}
+      - {name: description, label: 摘要, widget: text}
+      - {name: lang, label: 语言, widget: select, options: [{label: 中文, value: zh}, {label: English, value: en}], default: zh}
+      - {name: category, label: 分类, widget: select, options: [Research, Technical, Notes, Life], default: Notes}
+      - {name: date, label: 发表日期, widget: datetime, type: date, default: '{{now}}'}
+      - {name: tags, label: 标签, widget: list, required: false}
+      - {name: draft, label: 保存为草稿, widget: boolean, default: true}
+      - {name: body, label: 正文, widget: markdown}
+  - name: publications
+    label: 论文
+    folder: src/content/publications
+    create: true
+    fields:
+      - {name: title, label: 论文标题}
+      - {name: titleZh, label: 中文标题, required: false}
+      - {name: authors, label: 作者, widget: list}
+      - {name: authorNote, label: 作者说明, required: false}
+      - {name: authorNoteZh, label: 中文作者说明, required: false}
+      - {name: venue, label: 会议或期刊}
+      - {name: year, label: 年份, widget: number, value_type: int}
+      - {name: status, label: 发表状态, widget: select, options: [Published, Accepted, Preprint, Under Review]}
+      - {name: tags, label: 标签, widget: list}
+      - {name: tldr, label: 英文摘要, widget: text}
+      - {name: tldrZh, label: 中文摘要, widget: text, required: false}
+      - {name: contributions, label: 英文贡献, widget: list}
+      - {name: contributionsZh, label: 中文贡献, widget: list, required: false}
+      - name: links
+        label: 相关链接
+        widget: object
+        required: false
+        fields:
+          - {name: arxiv, label: arXiv, required: false}
+          - {name: pdf, label: PDF, required: false}
+          - {name: code, label: 代码, required: false}
+          - {name: project, label: 项目, required: false}
+          - {name: demo, label: 演示, required: false}
+      - {name: bibtex, label: BibTeX, widget: text, required: false}
+      - {name: highlight, label: 首页展示, widget: boolean, default: false}
+      - {name: order, label: 排序, widget: number, value_type: int, default: 999}
+  - name: projects
+    label: 项目
+    folder: src/content/projects
+    create: true
+    fields:
+      - {name: title, label: 英文标题}
+      - {name: titleZh, label: 中文标题, required: false}
+      - {name: role, label: 担任角色}
+      - {name: roleZh, label: 中文角色, required: false}
+      - {name: area, label: 研究领域, required: false}
+      - {name: areaZh, label: 中文领域, required: false}
+      - {name: description, label: 英文简介, widget: text}
+      - {name: descriptionZh, label: 中文简介, widget: text, required: false}
+      - {name: problem, label: 研究问题, required: false}
+      - {name: problemZh, label: 中文研究问题, required: false}
+      - {name: contribution, label: 贡献, required: false}
+      - {name: contributionZh, label: 中文贡献, required: false}
+      - {name: evidence, label: 验证结果, required: false}
+      - {name: evidenceZh, label: 中文验证结果, required: false}
+      - {name: image, label: 配图, widget: image, required: false}
+      - name: links
+        label: 相关链接
+        widget: object
+        required: false
+        fields:
+          - {name: code, label: 代码, required: false}
+          - {name: project, label: 项目, required: false}
+          - {name: demo, label: 演示, required: false}
+      - {name: order, label: 排序, widget: number, value_type: int, default: 999}

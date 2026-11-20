@@ -16,6 +16,7 @@ const { lang } = Astro.props;
       <a href={`mailto:${siteConfig.email}`} class="hover:text-[var(--accent)]">Email</a>
       <a href={siteConfig.scholar} class="hover:text-[var(--accent)]">Scholar</a>
       <a href={siteConfig.github} class="hover:text-[var(--accent)]">GitHub</a>
+      <a href="/manage/" class="text-[var(--muted)] hover:text-[var(--accent)]">{lang === 'zh' ? '管理内容' : 'Manage content'}</a>
     </div>
   </div>
 </footer>

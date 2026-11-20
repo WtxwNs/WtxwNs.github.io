@@ -1,0 +1,21 @@
+{
+  "name": "Tongxi Wang",
+  "nameZh": "王童曦",
+  "institution": "School of Future Technology, Southeast University",
+  "institutionZh": "东南大学未来技术学院",
+  "location": "Nanjing, China",
+  "locationZh": "中国南京",
+  "email": "tongxi_wang@seu.edu.cn",
+  "github": "https://github.com/WtxwNs",
+  "scholar": "https://scholar.google.com/citations?user=IJX5_8EAAAAJ",
+  "portrait": "",
+  "tagline": "I study the dynamics, stability, and efficiency of learning systems.",
+  "taglineZh": "研究强化学习理论、训练动力学、上下文学习与可靠人工智能系统。",
+  "intro": "I am an undergraduate researcher at Southeast University, working across reinforcement learning, multi-agent learning, and efficient language models. I care about mathematical structure that clarifies how learning systems behave and improves how they work in practice.",
+  "introZh": "关注能够被清晰解释、严格验证，并最终落到真实系统中的理论。",
+  "systemsZh": [
+    {"title": "RepoCheck", "area": "开源研究工具", "description": "面向 Python 与 PyTorch 科研仓库的本地复现性审计工具，检查环境、入口、配置漂移、数据路径、随机性与文档一致性。", "href": "https://github.com/WtxwNs/RepoCheck"},
+    {"title": "穿刺手术机器人导航与控制", "area": "具身智能与医学机器人", "description": "融合视觉与六维力觉感知，搭建实体平台，并在人体系模型上完成受控穿刺实验。", "href": "/zh/projects/"},
+    {"title": "BACH", "area": "可控音乐生成", "description": "以 bar-level symbolic notation 作为可编辑的中间表示，连接歌词、结构规划、乐谱生成和最终演奏。", "href": "https://github.com/WtxwNs/BACH"}
+  ]
+}

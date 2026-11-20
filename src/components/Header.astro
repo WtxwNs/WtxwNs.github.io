@@ -2,7 +2,7 @@
 import ThemeToggle from './ThemeToggle.astro';
 import LanguageToggle from './LanguageToggle.astro';
 import Monogram from './Monogram.astro';
-import { copy } from '@/data/profile';
+import { copy, siteConfig } from '@/data/profile';
 import { localizedPath, navItems, type Lang } from '@/data/navigation';
 
 interface Props {
@@ -19,7 +19,7 @@ const menuLabel = lang === 'zh' ? '打开导航菜单' : 'Open navigation menu';
   <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8" aria-label="Primary navigation">
     <a href={localizedPath(lang)} class="flex items-center gap-2.5 text-[var(--text)]" aria-label={lang === 'zh' ? '王童曦首页' : 'Tongxi Wang home'}>
       <Monogram compact />
-      <span class="hidden font-serif text-lg font-semibold sm:inline">Tongxi Wang</span>
+      <span class="font-serif text-lg font-semibold">{lang === 'zh' ? siteConfig.nameZh : siteConfig.name}</span>
     </a>
     <div class="hidden items-center gap-1 md:flex">
       {navItems.map((item) => {

@@ -11,6 +11,6 @@
   button?.addEventListener('click', () => {
     const root = document.documentElement;
     const dark = root.classList.toggle('dark');
-    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
   });
 </script>

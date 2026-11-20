@@ -1,105 +1,107 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
-import EditorialHomeZh from '@/components/EditorialHomeZh.astro';
-import HeroProfile from '@/components/HeroProfile.astro';
-import SectionTitle from '@/components/SectionTitle.astro';
-import ResearchTrackCard from '@/components/ResearchTrackCard.astro';
+import SocialLinks from '@/components/SocialLinks.astro';
 import PublicationCard from '@/components/PublicationCard.astro';
-import BlogCard from '@/components/BlogCard.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
-import { interests, news } from '@/data/profile';
+import { interests, news, siteConfig as profile } from '@/data/profile';
 import type { Lang } from '@/data/navigation';
 
 export function getStaticPaths() {
-  return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
+  return ['en', 'zh'].map(lang => ({ params: { lang } }));
 }
-
 const lang = Astro.params.lang as Lang;
-const pubs = (await getCollection('publications')).sort((a, b) => a.data.order - b.data.order);
-const highlighted = pubs.filter((p) => p.data.highlight).sort((a, b) => a.data.order - b.data.order);
+const zh = lang === 'zh';
+const publications = (await getCollection('publications')).sort((a, b) => a.data.order - b.data.order);
+const posts = (await getCollection('blog', ({ data }) => data.lang === lang && !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const posts = (await getCollection('blog', ({ data }) => !data.draft && data.lang === lang))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 2);
+const dateFormat = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en-GB', {dateStyle: 'medium', timeZone: 'UTC'});
 ---
-
-{
-  lang === 'zh' ? (
-    <EditorialHomeZh />
-  ) : (
-    <Layout lang={lang} title="Home">
-      <HeroProfile lang={lang} />
-
-      <section class="py-12" id="research">
-        <SectionTitle
-          eyebrow="Research agenda"
-          title="Three questions that connect my work"
-          description="The applications change; the recurring questions concern feedback, computation, and reliability."
-        />
-        <div class="grid gap-x-8 lg:grid-cols-3">
-          {interests.map((item) => <ResearchTrackCard {...item} lang={lang} />)}
-        </div>
+<Layout lang={lang} title={zh ? '首页' : 'Home'}>
+  <div class="homepage" id="top">
+    <section class="profile-band" aria-labelledby="name">
+      <div>
+        <p class="affiliation">{zh ? profile.institutionZh : profile.institution}</p>
+        <h1 id="name">{zh ? profile.nameZh : profile.name} <small lang={zh ? 'en' : 'zh'}>{zh ? profile.name : profile.nameZh}</small></h1>
+        <p class="statement">{zh ? profile.taglineZh : profile.tagline}</p>
+        <p class="bio">{zh ? profile.introZh : profile.intro}</p>
+        <SocialLinks lang={lang} />
+      </div>
+      <aside class="research" id="research" aria-labelledby="research-heading">
+        {profile.portrait && <img class="portrait" src={profile.portrait} alt={zh ? profile.nameZh : profile.name} width="110" height="110" />}
+        <h2 id="research-heading">{zh ? '研究方向' : 'Research interests'}</h2>
+        <ul>{interests.map(item => <li>
+          <h3>{zh ? item.titleZh : item.title}</h3>
+          <p>{zh ? item.questionZh : item.question}</p>
+        </li>)}</ul>
+        <a class="more" href={`/${lang}/academic/`}>{zh ? '学术经历' : 'Academic profile'} ↗</a>
+      </aside>
+    </section>
+    <div class="work">
+      <section id="publications" aria-labelledby="publications-heading">
+        <div class="section-heading"><h2 id="publications-heading">{zh ? '代表论文' : 'Selected papers'}</h2><a class="more" href={`/${lang}/publications/`}>{zh ? '全部论文' : 'All papers'} →</a></div>
+        {publications.filter(p => p.data.highlight).map(pub => <PublicationCard pub={pub} lang={lang} compact />)}
       </section>
-
-      <section class="py-12">
-        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <SectionTitle
-            eyebrow="Selected research"
-            title="Selected work"
-            description="Each project starts from a concrete question and aims for a testable central claim."
-          />
-          <a href={`/${lang}/publications`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
-            All publications →
-          </a>
-        </div>
-        <div>{highlighted.map((pub) => <PublicationCard pub={pub} compact lang={lang} />)}</div>
+      <section id="writing" aria-labelledby="writing-heading">
+        <div class="section-heading"><h2 id="writing-heading">{zh ? '近期写作' : 'Recent writing'}</h2><a class="more" href={`/${lang}/blog/`}>{zh ? '全部文章' : 'All posts'} →</a></div>
+        {posts.map(({ data, slug }) => <article class="entry">
+          <time datetime={data.date.toISOString()}>{dateFormat.format(data.date)}</time>
+          <h3><a href={`/${lang}/blog/${slug}/`}>{data.title}</a></h3><p>{data.description}</p>
+        </article>)}
+        {!posts.length && <p class="entry">{zh ? '暂无已发表的文章。' : 'No published posts yet.'}</p>}
+        {!zh && <div class="updates"><h2>News</h2>{news.map(item => <p><time>{item.date}</time><a href={item.hrefEn}>{item.en}</a></p>)}</div>}
       </section>
+    </div>
+    <section id="systems">
+      <div class="section-heading"><h2>{zh ? '研究系统与项目' : 'Systems and projects'}</h2><a class="more" href={`/${lang}/projects/`}>{zh ? '全部项目' : 'All projects'} →</a></div>
+      <div class="systems">{zh ? profile.systemsZh.map(system => <article class="entry">
+        <span class="area">{system.area}</span><h3><a href={system.href}>{system.title} ↗</a></h3><p>{system.description}</p>
+      </article>) : projects.map(project => <ProjectCard project={project} lang={lang} />)}</div>
+    </section>
+  </div>
+</Layout>
 
-      <section class="py-12">
-        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <SectionTitle
-            eyebrow="Selected systems"
-            title="From theory to physical systems"
-            description="Robotics, medical AI, and embedded systems ground my research in real constraints."
-          />
-          <a href={`/${lang}/projects`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
-            All systems work →
-          </a>
-        </div>
-        <div class="grid gap-7 md:grid-cols-3">
-          {projects.map((project) => <ProjectCard project={project} lang={lang} />)}
-        </div>
-      </section>
-
-      <section class="grid gap-10 py-12 lg:grid-cols-[0.85fr_1.15fr]">
-        <div>
-          <SectionTitle eyebrow="Updates" title="News" />
-          <ol class="border-t border-[var(--line)]">
-            {
-              news.map((item) => (
-                <li class="grid grid-cols-[76px_1fr] gap-3 border-b border-[var(--line)] py-4 text-sm">
-                  <time class="font-mono text-xs font-semibold text-[var(--accent)]">{item.date}</time>
-                  <a href={item.hrefEn} class="text-[var(--muted)] hover:text-[var(--text)]">
-                    {item.en}
-                  </a>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-        <div>
-          <div class="flex items-end justify-between gap-4">
-            <SectionTitle eyebrow="Writing" title="Recent writing" />
-            <a href={`/${lang}/blog`} class="mb-6 text-sm font-semibold text-[var(--accent)] hover:underline">
-              All writing →
-            </a>
-          </div>
-          <div class="grid gap-4 sm:grid-cols-2">
-            {posts.map((post) => <BlogCard post={post} lang={lang} />)}
-          </div>
-        </div>
-      </section>
-    </Layout>
-  )
-}
+<style>
+  .homepage {padding-bottom: 3rem; overflow-wrap: anywhere}
+  section, aside {scroll-margin-top: 5rem; min-width: 0}
+  .profile-band {
+    --wash: color-mix(in srgb, var(--accent-soft) 45%, var(--bg));
+    display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(15rem, 1fr); align-items: center; gap: 4rem;
+    padding: 2.5rem 0 3rem; border-bottom: 2px solid var(--text);
+    background: var(--wash); box-shadow: 0 0 0 100vmax var(--wash); clip-path: inset(0 -100vmax);
+  }
+  .affiliation, .area, time {color: var(--accent); font-size: .84rem; font-weight: 600}
+  h1, h2, h3, .statement {font-family: Georgia, 'Songti SC', SimSun, serif}
+  h1 {font-size: 4.3rem; line-height: 1.13; margin: .75rem 0 1.25rem; font-weight: 600; text-wrap: balance}
+  h1 small {display: block; margin-top: .3rem; font-size: 2rem; font-weight: 400; color: var(--muted)}
+  .statement {font-size: 1.5rem; line-height: 1.55; max-width: 32em}
+  .bio, .entry p, .research li p {color: var(--muted); line-height: 1.75}
+  .bio {max-width: 62ch; margin: .8rem 0 1.5rem}
+  .research {padding: 1rem 0 1rem 1.6rem; border-left: 2px solid var(--accent)}
+  .research h2 {font: 600 .9rem system-ui; color: var(--accent)}
+  .portrait {float: right; margin: 0 0 1rem 1rem; border-radius: 4px; object-fit: cover}
+  .research li {margin: 1rem 0}
+  .research h3 {font-weight: 600; font-size: 1.17rem}
+  .research li p, .entry p {font-size: .92rem}
+  .more {font-size: .85rem; font-weight: 600; color: var(--accent); text-underline-offset: .25em}
+  a:hover {text-decoration: underline; text-underline-offset: .2em}
+  .work {display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 3rem; padding: 2rem 0}
+  .section-heading {display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: .5rem; margin-bottom: .75rem}
+  .section-heading h2, .updates h2 {font-size: 1.65rem; font-weight: 600}
+  .entry {border-top: 1px solid var(--line); padding: 1.25rem 0}
+  .entry h3 {font-size: 1.35rem; font-weight: 600; line-height: 1.4; margin: .45rem 0}
+  .entry time, .updates time {font-variant-numeric: tabular-nums}
+  .systems {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem}
+  .updates {margin-top: 2rem}
+  .updates p {display: grid; gap: .25rem; margin-top: .8rem; font-size: .9rem}
+  @media (max-width: 760px) {
+    .profile-band, .work, .systems {grid-template-columns: minmax(0, 1fr); gap: 1.7rem}
+    .profile-band {padding: 1rem 0 1.7rem}
+    h1 {font-size: 3rem} h1 small {font-size: 1.55rem}
+    .statement {font-size: 1.25rem}
+    .research {padding: .25rem 0 .25rem 1rem}
+    .research li {margin: .65rem 0}
+    .systems {gap: 0}
+  }
+</style>

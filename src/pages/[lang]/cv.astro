@@ -14,7 +14,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 ---
 <Layout lang={lang} title="CV">
   <section class="py-6">
-    <SectionTitle title={lang === 'zh' ? '王童曦 / Tongxi Wang' : 'Tongxi Wang / 王童曦'} description={`${siteConfig.email} · ${siteConfig.github} · Google Scholar`} />
+    <SectionTitle title={lang === 'zh' ? `${siteConfig.nameZh} / ${siteConfig.name}` : `${siteConfig.name} / ${siteConfig.nameZh}`} description={`${siteConfig.email} · ${siteConfig.github} · Google Scholar`} />
     <div class="flex flex-wrap gap-2 text-sm font-semibold text-[var(--accent)]">
       <a href={`mailto:${siteConfig.email}`}>Email</a>
       <a href={siteConfig.github}>GitHub</a>
