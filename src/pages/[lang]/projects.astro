@@ -9,12 +9,12 @@ const lang = Astro.params.lang as Lang;
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
 <Layout lang={lang} title={lang === 'zh' ? '系统' : 'Systems'}>
-  <section class="py-10">
+  <section class="pb-4">
     <SectionTitle
-      eyebrow="Systems"
+      page
       title={lang === 'zh' ? '真实系统中的研究与工程' : 'Research and engineering in real systems'}
       description={lang === 'zh' ? '从医学机器人到 Agent 与 FPGA，这些经历让我持续面对感知噪声、硬件约束和系统集成问题。' : 'Medical robotics, agent workflows, and FPGA work keep the research grounded in sensing noise, hardware constraints, and system integration.'}
     />
   </section>
-  <div class="grid gap-8 md:grid-cols-3">{projects.map((project) => <ProjectCard project={project} lang={lang} />)}</div>
+  <div>{projects.map((project) => <ProjectCard project={project} lang={lang} />)}</div>
 </Layout>

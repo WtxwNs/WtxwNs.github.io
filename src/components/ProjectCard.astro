@@ -34,15 +34,15 @@ const contribution = lang === 'zh' ? d.contributionZh ?? d.contribution : d.cont
 const evidence = lang === 'zh' ? d.evidenceZh ?? d.evidence : d.evidence;
 const links = Object.entries(d.links).filter(([, href]) => typeof href === 'string' && href.length > 0 && !href.startsWith('#todo'));
 ---
-<article class="group overflow-hidden border-t border-[var(--line)] bg-[var(--bg)] pt-5 transition hover:border-[var(--accent)]">
+<article class:list={['grid items-start gap-4 border-t border-[var(--line)] py-6', d.image && 'sm:grid-cols-[7.5rem_minmax(0,1fr)]']}>
   {d.image && (
-    <div class="overflow-hidden rounded-md border border-[var(--line)] bg-[var(--panel)]">
-      <img src={d.image} alt="" class="h-40 w-full object-cover transition duration-300 group-hover:scale-[1.02]" loading="lazy" />
+    <div>
+      <img src={d.image} alt="" width="120" height="70" class="h-auto w-[7.5rem]" loading="lazy" />
     </div>
   )}
-  <div class="py-5">
-    <p class="font-mono text-xs font-semibold uppercase tracking-[0.08em] text-[var(--accent)]">{role}{area ? ` · ${area}` : ''}</p>
-    <h3 class="mt-2 font-serif text-2xl font-semibold leading-tight text-[var(--text)]">{title}</h3>
+  <div>
+    <h3 class="font-serif text-xl font-semibold leading-snug">{title}</h3>
+    <p class="mt-1 text-sm text-[var(--muted)]">{role}{area ? ` · ${area}` : ''}</p>
     <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">{description}</p>
     {(problem || contribution || evidence) && (
       <dl class="mt-5 space-y-3 border-l border-[var(--line)] pl-4 text-sm">

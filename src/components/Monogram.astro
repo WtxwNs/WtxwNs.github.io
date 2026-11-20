@@ -13,7 +13,7 @@ const { compact = false, label = 'Tongxi Wang monogram' } = Astro.props;
   aria-label={label}
   class:list={['monogram', compact ? 'h-9 w-9' : 'h-52 w-52 sm:h-60 sm:w-60']}
 >
-  <rect x="10" y="10" width="220" height="220" rx="52" class="monogram-frame" />
+  {!compact && <rect x="10" y="10" width="220" height="220" rx="52" class="monogram-frame" />}
   <path d="M49 71H126M87 71V169" class="monogram-letter" />
   <path d="M118 72L142 169L166 104L190 169L213 72" class="monogram-letter" />
   <path d="M35 151C65 130 92 134 116 147C143 162 168 158 210 126" class="monogram-curve" />

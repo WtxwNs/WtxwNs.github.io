@@ -14,8 +14,8 @@ const links = [
 ];
 ---
 <Layout lang={lang} title={lang === 'zh' ? '链接' : 'Links'}>
-  <SectionTitle title={lang === 'zh' ? '常用链接' : 'Useful Links'} />
-  <div class="grid gap-3 md:grid-cols-2">
-    {links.map(([label, href]) => <a class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4 font-semibold text-[var(--text)] hover:border-[var(--accent)]" href={href}>{label}</a>)}
+  <SectionTitle page title={lang === 'zh' ? '常用链接' : 'Useful Links'} />
+  <div class="grid justify-items-start gap-3">
+    {links.map(([label, href]) => <a class="text-link" href={href}>{label}</a>)}
   </div>
 </Layout>

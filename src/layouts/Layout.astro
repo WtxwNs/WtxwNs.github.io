@@ -63,10 +63,13 @@ const socialImage = new URL('/og-card.png', siteConfig.site).toString();
     })}></script>
   </head>
   <body>
-    <Header lang={lang} pathname={Astro.url.pathname} />
-    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
-      <slot />
-    </main>
-    <Footer lang={lang} />
+    <a class="skip-link" href="#main-content">{lang === 'zh' ? '跳到正文' : 'Skip to content'}</a>
+    <div class="site-shell">
+      <Header lang={lang} pathname={Astro.url.pathname} />
+      <div class="reading-column">
+        <main id="main-content"><slot /></main>
+        <Footer lang={lang} />
+      </div>
+    </div>
   </body>
 </html>

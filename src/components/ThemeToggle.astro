@@ -1,16 +1,24 @@
+---
+import type { Lang } from '@/data/navigation';
+interface Props { lang: Lang }
+const label = Astro.props.lang === 'zh' ? '切换深色模式' : 'Toggle dark mode';
+---
 <button
   type="button"
-  class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel)] text-[var(--text)] transition hover:border-[var(--accent)]"
-  aria-label="Toggle dark mode"
+  class="inline-flex h-10 w-10 items-center justify-center text-[var(--muted)] hover:text-[var(--text)]"
+  aria-label={label}
+  title={label}
   data-theme-toggle
 >
   <span aria-hidden="true">◐</span>
 </button>
 <script>
   const button = document.querySelector('[data-theme-toggle]');
+  button?.setAttribute('aria-pressed', String(document.documentElement.classList.contains('dark')));
   button?.addEventListener('click', () => {
     const root = document.documentElement;
     const dark = root.classList.toggle('dark');
+    button?.setAttribute('aria-pressed', String(dark));
     try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
   });
 </script>

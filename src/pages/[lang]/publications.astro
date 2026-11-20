@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import PublicationCard from '@/components/PublicationCard.astro';
 import SectionTitle from '@/components/SectionTitle.astro';
+import { siteConfig } from '@/data/profile';
 import type { Lang } from '@/data/navigation';
 
 export function getStaticPaths() {
@@ -12,14 +13,13 @@ const lang = Astro.params.lang as Lang;
 const pubs = (await getCollection('publications')).sort((a, b) => a.data.order - b.data.order);
 ---
 <Layout lang={lang} title={lang === 'zh' ? '论文' : 'Publications'}>
-  <section class="py-10">
+  <section class="pb-8">
     <SectionTitle
-      eyebrow="Publications"
-      title={lang === 'zh' ? '论文与研究输出' : 'Publications'}
-      description={lang === 'zh' ? '按研究进展排序；标题下方用一句话说明每项工作的核心判断。' : 'Ordered by research priority, with one sentence stating the central claim of each project.'}
+      page
+      title={lang === 'zh' ? '论文' : 'Publications'}
     />
     <p class="max-w-3xl text-sm leading-relaxed text-[var(--muted)]">
-      {lang === 'zh' ? 'Google Scholar 提供最新的引用与版本信息。' : 'Google Scholar contains the latest citation and version information.'}
+      <a class="text-link" href={siteConfig.scholar}>Google Scholar</a>
     </p>
   </section>
   <div>{pubs.map((pub) => <PublicationCard pub={pub} lang={lang} />)}</div>

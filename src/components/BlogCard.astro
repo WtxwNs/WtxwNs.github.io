@@ -1,16 +1,25 @@
 ---
-interface Props {
-  post: {
-    slug: string;
-    data: { title: string; description: string; date: Date; category: string; tags: string[] };
-  };
-  lang: 'en' | 'zh';
-}
-const { post, lang } = Astro.props;
+import type { CollectionEntry } from 'astro:content';
+import type { Lang } from '@/data/navigation';
+interface Props { post: CollectionEntry<'blog'>; lang: Lang; compact?: boolean }
+const { post: { data, slug }, lang, compact = false } = Astro.props;
+const date = data.date.toISOString().slice(0, 10);
 ---
-<article class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 transition hover:border-[var(--accent)]">
-  <p class="text-sm font-semibold text-[var(--accent)]">{post.data.category} · {post.data.date.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US')}</p>
-  <h3 class="mt-1 font-serif text-2xl font-semibold text-[var(--text)]"><a href={`/${lang}/blog/${post.slug}`}>{post.data.title}</a></h3>
-  <p class="mt-2 text-sm text-[var(--muted)]">{post.data.description}</p>
-  <p class="mt-3 text-xs text-[var(--muted)]">{post.data.tags.join(' · ')}</p>
+<article class="writing-entry">
+  <time datetime={date}>{date}</time>
+  <div>
+    <h3><a href={`/${lang}/blog/${slug}/`}>{data.title}</a></h3>
+    {!compact && <>
+      <p>{data.description}</p>
+      <small>{[data.category, ...data.tags].join(' · ')}</small>
+    </>}
+  </div>
 </article>
+<style>
+  .writing-entry {display:grid; grid-template-columns:6rem minmax(0,1fr); gap:1rem; align-items:baseline; padding:.45rem 0}
+  time, small {font-size:.84rem; color:var(--muted); font-variant-numeric:tabular-nums}
+  h3 {font-size:1.08rem; font-family:var(--serif); font-weight:600; line-height:1.6}
+  a:hover {color:var(--accent); text-decoration:underline; text-underline-offset:.2em}
+  p {margin:.25rem 0; color:var(--muted); font-size:.95rem}
+  @media (max-width:540px) {.writing-entry {display:block; padding:.55rem 0} time {display:block; margin-bottom:.15rem}}
+</style>

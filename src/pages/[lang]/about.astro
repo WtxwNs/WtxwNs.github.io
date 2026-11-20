@@ -7,9 +7,9 @@ export function getStaticPaths() { return [{ params: { lang: 'en' } }, { params:
 const lang = Astro.params.lang as Lang;
 ---
 <Layout lang={lang} title={lang === 'zh' ? '关于' : 'About'}>
-  <section class="max-w-3xl py-10">
+  <section class="pb-4">
     <SectionTitle
-      eyebrow="About"
+      page
       title={lang === 'zh' ? '从机器人系统走向学习理论' : 'From robotic systems to learning theory'}
       description={lang === 'zh' ? '工程背景让我关心算法在噪声、反馈与有限计算下究竟如何工作。' : 'An engineering background keeps me interested in how algorithms behave under noise, feedback, and limited computation.'}
     />

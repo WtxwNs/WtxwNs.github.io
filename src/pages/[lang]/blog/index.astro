@@ -9,14 +9,14 @@ const lang = Astro.params.lang as Lang;
 const posts = (await getCollection('blog', ({ data }) => !data.draft && data.lang === lang)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 <Layout lang={lang} title={lang === 'zh' ? '写作' : 'Writing'}>
-  <section class="py-10">
+  <section class="pb-3">
     <SectionTitle
-      eyebrow="Writing"
+      page
       title={lang === 'zh' ? '研究笔记与思考' : 'Research notes and essays'}
       description={lang === 'zh' ? '记录论文阅读、研究判断和工程实践中值得保留的想法。' : 'Notes on papers, research judgment, and ideas worth preserving from engineering practice.'}
     />
   </section>
-  <div class="grid gap-4 md:grid-cols-2">
+  <div class="grid gap-5">
     {posts.map((post) => <BlogCard post={post} lang={lang} />)}
   </div>
 </Layout>

@@ -14,8 +14,8 @@ const targetPath = /^blog\/.+/.test(withoutLang) && withoutLang !== 'blog/' ? 'b
 
 <a
   href={localizedPath(other, targetPath)}
-  class="inline-flex h-10 items-center rounded-md border border-[var(--line)] bg-[var(--panel)] px-3 text-sm text-[var(--muted)] transition hover:border-[var(--accent)] hover:text-[var(--text)]"
+  class="inline-flex h-10 items-center justify-center px-2 text-sm text-[var(--muted)] hover:text-[var(--text)]"
   aria-label={`Switch language to ${other}`}
 >
-  {other.toUpperCase()}
+  {other === 'en' ? 'EN' : '中文'}
 </a>

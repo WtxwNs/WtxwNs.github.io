@@ -18,9 +18,9 @@ const pubs = (await getCollection('publications'))
 ---
 
 <Layout lang={lang} title={lang === 'zh' ? '研究' : 'Research'}>
-  <section class="max-w-4xl py-12">
+  <section class="pb-6">
     <SectionTitle
-      eyebrow="Research"
+      page
       title={lang === 'zh' ? '理解学习系统如何变化、稳定与计算' : 'Understanding how learning systems adapt, stabilize, and compute'}
       description={lang === 'zh' ? '我的工作从强化学习与博弈动力学中的理论问题出发，也关心这些结构能否导向更可靠、更高效的算法。' : 'My work begins with theoretical questions in reinforcement learning and game dynamics, then asks whether the resulting structure can support more reliable and efficient algorithms.'}
     />
@@ -36,7 +36,7 @@ const pubs = (await getCollection('publications'))
       title={lang === 'zh' ? '研究主线' : 'Research threads'}
       description={lang === 'zh' ? '三条主线共享同一个目标：用结构性的理解换取更可预测的学习行为。' : 'The common goal is to turn structural understanding into more predictable learning behavior.'}
     />
-    <div class="grid gap-x-8 lg:grid-cols-3">{interests.map((item) => <ResearchTrackCard {...item} lang={lang} />)}</div>
+    <div>{interests.map((item) => <ResearchTrackCard {...item} lang={lang} />)}</div>
   </section>
 
   <section class="py-10">
@@ -62,7 +62,7 @@ const pubs = (await getCollection('publications'))
         text: lang === 'zh' ? '用工程约束检验理论抽象是否抓住了真正重要的变量。' : 'Use engineering constraints to test whether the abstraction captures the variables that matter.'
       }
     ].map((item) => (
-      <article class="border-t-2 border-[var(--accent)] pt-4">
+      <article class="border-t border-[var(--line)] pt-4">
         <h3 class="font-serif text-2xl font-semibold text-[var(--text)]">{item.title}</h3>
         <p class="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.text}</p>
       </article>

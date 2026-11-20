@@ -5,92 +5,68 @@ import Monogram from './Monogram.astro';
 import { copy, siteConfig } from '@/data/profile';
 import { localizedPath, navItems, type Lang } from '@/data/navigation';
 
-interface Props {
-  lang: Lang;
-  pathname: string;
-}
-
+interface Props { lang: Lang; pathname: string }
 const { lang, pathname } = Astro.props;
-const labels = copy[lang].nav;
-const menuLabel = lang === 'zh' ? '打开导航菜单' : 'Open navigation menu';
+const zh = lang === 'zh';
+const home = localizedPath(lang);
+const links = [
+  { href: home, label: zh ? '首页' : 'Home' },
+  ...navItems.map(item => ({ href: localizedPath(lang, item.href), label: copy[lang].nav[item.key] }))
+];
+const current = pathname.replace(/\/$/, '');
 ---
-
-<header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--bg)]/90 backdrop-blur">
-  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8" aria-label="Primary navigation">
-    <a href={localizedPath(lang)} class="flex items-center gap-2.5 text-[var(--text)]" aria-label={lang === 'zh' ? '王童曦首页' : 'Tongxi Wang home'}>
-      <Monogram compact />
-      <span class="font-serif text-lg font-semibold">{lang === 'zh' ? siteConfig.nameZh : siteConfig.name}</span>
-    </a>
-    <div class="hidden items-center gap-1 md:flex">
-      {navItems.map((item) => {
-        const href = localizedPath(lang, item.href);
-        const active = pathname === href || (item.href && pathname.startsWith(`${href}/`));
-        return (
-          <a
-            href={href}
-            aria-current={active ? 'page' : undefined}
-            class:list={[
-              'rounded-md px-3 py-2 text-sm transition hover:bg-[var(--panel)]',
-              active ? 'text-[var(--accent)]' : 'text-[var(--muted)]'
-            ]}
-          >
-            {labels[item.key]}
-          </a>
-        );
-      })}
-    </div>
-    <div class="flex items-center gap-2">
-      <LanguageToggle lang={lang} pathname={pathname} />
-      <ThemeToggle />
-      <button
-        type="button"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel)] text-[var(--text)] md:hidden"
-        aria-label={menuLabel}
-        aria-expanded="false"
-        aria-controls="mobile-nav"
-        data-mobile-menu-button
-      >
-        <span aria-hidden="true">☰</span>
-      </button>
-    </div>
+<header class="site-nav">
+  <a class="signature" href={home} aria-label={zh ? `${siteConfig.nameZh}首页` : `${siteConfig.name} home`}>
+    <Monogram compact />
+    <span>{zh ? siteConfig.nameZh : siteConfig.name}</span>
+  </a>
+  <nav id="mobile-nav" aria-label={zh ? '主导航' : 'Main navigation'}>
+    {links.map(({ href, label }) => <a href={href} aria-current={
+      current === href ? 'page' : (href !== home && current.startsWith(href + '/') ? 'location' : undefined)
+    }>{label}</a>)}
   </nav>
-  <div id="mobile-nav" class="mx-auto hidden max-w-6xl px-4 pb-4 sm:px-6 lg:px-8 md:hidden" data-mobile-menu>
-    <div class="grid gap-1 rounded-lg border border-[var(--line)] bg-[var(--panel)] p-2 shadow-soft">
-      {navItems.map((item) => {
-        const href = localizedPath(lang, item.href);
-        const active = pathname === href || (item.href && pathname.startsWith(`${href}/`));
-        return (
-          <a
-            href={href}
-            aria-current={active ? 'page' : undefined}
-            class:list={[
-              'rounded-md px-3 py-2 text-sm transition hover:bg-[var(--bg)]',
-              active ? 'text-[var(--accent)]' : 'text-[var(--muted)]'
-            ]}
-            data-mobile-menu-link
-          >
-            {labels[item.key]}
-          </a>
-        );
-      })}
-    </div>
+  <div class="options">
+    <LanguageToggle lang={lang} pathname={pathname} />
+    <ThemeToggle lang={lang} />
+    <button type="button" class="menu" data-mobile-menu-button aria-controls="mobile-nav"
+      aria-expanded="false" aria-label={zh ? '导航菜单' : 'Navigation menu'} title={zh ? '导航菜单' : 'Navigation menu'}>
+      <span aria-hidden="true">☰</span>
+    </button>
   </div>
 </header>
-
+<style>
+  .site-nav {position:sticky; top:2.5rem; align-self:start}
+  .signature {display:inline-flex; align-items:center; color:var(--text)}
+  .signature span, .menu {display:none}
+  nav {margin:1.8rem 0 1.6rem; display:grid; justify-items:start; gap:.25rem}
+  nav a {display:inline-flex; align-items:center; min-height:2rem; color:var(--muted); font-size:.94rem}
+  nav a[aria-current] {color:var(--text); font-weight:600; text-decoration:underline; text-underline-offset:.4em; text-decoration-thickness:1px}
+  nav a:hover {color:var(--text); text-decoration:underline; text-underline-offset:.4em}
+  .options {display:flex; align-items:center; gap:.35rem}
+  @media(max-width:799px) {
+    .site-nav {position:static; display:grid; grid-template-columns:1fr auto; align-items:center; padding-bottom:.5rem; border-bottom:1px solid var(--line)}
+    .signature {gap:.45rem; justify-self:start}
+    .signature span {display:inline; font-family:var(--serif); font-size:1.05rem}
+    nav {display:none; grid-column:1/-1; grid-row:2; margin:.5rem 0 0; padding-block:.5rem; border-top:1px solid var(--line)}
+    nav[data-open] {display:flex; flex-wrap:wrap; gap:.25rem 1.2rem}
+    .options {grid-column:2; grid-row:1}
+    .menu {display:grid; place-items:center; width:2.5rem; height:2.5rem; color:var(--muted)}
+  }
+  @media(max-width:799px) and (scripting:none) {nav {display:flex; flex-wrap:wrap; gap:1rem} .menu {display:none}}
+</style>
 <script>
-  const button = document.querySelector('[data-mobile-menu-button]');
-  const menu = document.querySelector('[data-mobile-menu]');
+  const button = document.querySelector<HTMLButtonElement>('[data-mobile-menu-button]')!;
+  const menu = document.querySelector<HTMLElement>('#mobile-nav')!;
   const setOpen = (open: boolean) => {
-    menu?.classList.toggle('hidden', !open);
-    button?.setAttribute('aria-expanded', String(open));
+    menu.toggleAttribute('data-open', open);
+    button.setAttribute('aria-expanded', String(open));
   };
-  button?.addEventListener('click', () => {
-    setOpen(button.getAttribute('aria-expanded') !== 'true');
-  });
-  document.querySelectorAll('[data-mobile-menu-link]').forEach((link) => {
-    link.addEventListener('click', () => setOpen(false));
-  });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') setOpen(false);
+  button.addEventListener('click', () => setOpen(!menu.hasAttribute('data-open')));
+  menu.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && menu.hasAttribute('data-open')) {
+      setOpen(false);
+      button.focus();
+    }
   });
 </script>
